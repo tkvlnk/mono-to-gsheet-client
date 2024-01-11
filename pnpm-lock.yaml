@@ -8,12 +8,21 @@ dependencies:
   '@types/gapi':
     specifier: ^0.0.47
     version: 0.0.47
+  '@types/gapi.client.people-v1':
+    specifier: ^0.0.4
+    version: 0.0.4
   '@types/gapi.client.sheets-v4':
+    specifier: ^0.0.4
+    version: 0.0.4
+  '@types/gsi':
     specifier: ^0.0.4
     version: 0.0.4
   '@vitejs/plugin-basic-ssl':
     specifier: ^1.0.2
     version: 1.0.2(vite@5.0.11)
+  constate:
+    specifier: ^3.3.2
+    version: 3.3.2(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -572,6 +581,13 @@ packages:
       '@types/gapi.client.discovery-v1': 0.0.4
     dev: false
 
+  /@maxim_mazurok/gapi.client.people-v1@0.0.20240109:
+    resolution: {integrity: sha512-eZqWN7mi/C+p1mTxWAsZpYw58eUqZKIzPfd/pAUs8Afjd1bLu4s5fr4Huk+3HcaxUOeS0PIni9sE3Hkr5y9lvg==}
+    dependencies:
+      '@types/gapi.client': 1.0.8
+      '@types/gapi.client.discovery-v1': 0.0.4
+    dev: false
+
   /@maxim_mazurok/gapi.client.sheets-v4@0.0.20240102:
     resolution: {integrity: sha512-P8sxU5sPlqPjGURyzUP867Rw+ygFe5oSXCcD6eL9nkifMyzEC1EXY/rxZNmUQJ3IW2tDJ4xRBa/fv1K+5HmjOA==}
     dependencies:
@@ -729,6 +745,12 @@ packages:
       '@maxim_mazurok/gapi.client.discovery-v1': 0.1.20200806
     dev: false
 
+  /@types/gapi.client.people-v1@0.0.4:
+    resolution: {integrity: sha512-gn0ET15woQxTWfbmasznFO33oXGQNnQN/WrHLSQnXy+4DlZXUH/DEh05CO2yupsezHIjGS4IYL28Oo6RuWoFNQ==}
+    dependencies:
+      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240109
+    dev: false
+
   /@types/gapi.client.sheets-v4@0.0.4:
     resolution: {integrity: sha512-6kTJ7aDMAElfdQV1XzVJmZWjgbibpa84DMuKuaN8Cwqci/dkglPyHXKvsGrRugmuYvgFYr35AQqwz6j3q8R0dw==}
     dependencies:
@@ -741,6 +763,10 @@ packages:
 
   /@types/gapi@0.0.47:
     resolution: {integrity: sha512-/ZsLuq6BffMgbKMtZyDZ8vwQvTyKhKQ1G2K6VyWCgtHHhfSSXbk4+4JwImZiTjWNXfI2q1ZStAwFFHSkNoTkHA==}
+    dev: false
+
+  /@types/gsi@0.0.4:
+    resolution: {integrity: sha512-RnQ8fEi7Uzbkd5T8Q2aI5rtJAlZeUG/qhHGnHFql2VAxHdtMAjEVDk14M0Jt5D9mkdB5gsxtCLgDXl0Vy9dilA==}
     dev: false
 
   /@types/json-schema@7.0.15:
@@ -1085,6 +1111,14 @@ packages:
 
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  /constate@3.3.2(react@18.2.0):
+    resolution: {integrity: sha512-ZnEWiwU6QUTil41D5EGpA7pbqAPGvnR9kBjko8DzVIxpC60mdNKrP568tT5WLJPAxAOtJqJw60+h79ot/Uz1+Q==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}

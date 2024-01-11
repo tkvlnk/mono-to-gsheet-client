@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@types/gapi": "^0.0.47",
+    "@types/gapi.client.people-v1": "^0.0.4",
     "@types/gapi.client.sheets-v4": "^0.0.4",
+    "@types/gsi": "^0.0.4",
     "@vitejs/plugin-basic-ssl": "^1.0.2",
+    "constate": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3"
