@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { GoogleApisFacadeProvider, useGoogleApisFacade } from "./components/GoogleApisFacade";
+import { GoogleApisFacadeProvider, useGoogleApisFacade } from "./hooks/useGoogleApiFacade/useGoogleApisFacade";
 
 export default function App() {
   return <GoogleApisFacadeProvider>

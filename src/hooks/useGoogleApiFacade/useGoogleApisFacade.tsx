@@ -1,7 +1,7 @@
 import constate from "constate";
 import { useState } from "react";
-import { useAsync } from "../hooks/useAsync";
-import { useAppendScript } from "../hooks/useAppendScript";
+import { useAsync } from "../useAsync";
+import { useAppendScript } from "../useAppendScript";
 
 const CLIENT_ID = '905474591291-suogt2amt9sqlop15te377an0ugbc7f9.apps.googleusercontent.com';
 
@@ -44,32 +44,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
     return tokenClient;
   });
 
-  const auth = useAsync(async () => {
-    const tokenClient = await tokenClientPromise;
-
-    const result = new Promise<GoogleApiOAuth2TokenObject>((resolve, reject) => {
-      tokenClient.callback = (resp) => {
-        if (resp.error !== undefined) {
-          reject(resp);
-          return;
-        }
-        console.log('gapi.client access token: ' + JSON.stringify(gapi.client.getToken()));
-
-        resolve(gapi.client.getToken())
-      }
-    });
-
-    if (gapi.client.getToken() === null) {
-      // Prompt the user to select a Google Account and asked for consent to share their data
-      // when establishing a new session.
-      tokenClient.requestAccessToken({ prompt: '' });
-    } else {
-      // Skip display of account chooser and consent dialog for an existing session.
-      tokenClient.requestAccessToken({ prompt: '' });
-    }
-
-    return result
-  });
+  const auth = useAsync(() => authorizeApi(tokenClientPromise));
   
   const profile = useAsync(async () => {
     assertAuthSuccess();
@@ -144,4 +119,31 @@ async function prepareGsi(gsiReady: Promise<void>) {
       reject(err);
     }
   });
+}
+
+async function authorizeApi(tokenClientPromise: Promise<TokenClient>) {
+  const tokenClient = await tokenClientPromise;
+
+  const result = new Promise<GoogleApiOAuth2TokenObject>((resolve, reject) => {
+    tokenClient.callback = (resp) => {
+      if (resp.error !== undefined) {
+        reject(resp);
+        return;
+      }
+      console.log('gapi.client access token: ' + JSON.stringify(gapi.client.getToken()));
+
+      resolve(gapi.client.getToken())
+    }
+  });
+
+  if (gapi.client.getToken() === null) {
+    // Prompt the user to select a Google Account and asked for consent to share their data
+    // when establishing a new session.
+    tokenClient.requestAccessToken({ prompt: '' });
+  } else {
+    // Skip display of account chooser and consent dialog for an existing session.
+    tokenClient.requestAccessToken({ prompt: '' });
+  }
+
+  return result
 }

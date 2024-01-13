@@ -18,7 +18,7 @@ export type AsyncState<T extends (...args: never[]) => Promise<unknown>> = {
 } | {
   status: "error";
   data: null;
-  error: unknown;
+  error: string;
   params: Parameters<T>;
 }
 
