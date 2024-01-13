@@ -70,13 +70,10 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
 
     return result
   });
-
-  const profile2 = useAsync(async () => gapi.client.people.people.get({
-    resourceName: 'people/me',
-    personFields: 'names,emailAddresses',
-  }));
-
+  
   const profile = useAsync(async () => {
+    assertAuthSuccess();
+
     const res = await fetch('https://www.googleapis.com/oauth2/v2/userinfo?alt=json', {
       headers: {
         Authorization: `Bearer ${auth.data?.access_token}`
@@ -86,13 +83,15 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
     return res.json();
   });
 
-  const updateSheets = useAsync(async () => {
-    gapi.client.sheets.spreadsheets.values.update({
-      spreadsheetId: '1TcpjYSMU6_AegrKyCfYJvcuTcWdzEKT1dHpgScGEo2Q',
-      range: 'WebDemo!C5',
+  const updateSheets = useAsync(async ({ range, values, spreadsheetId }: { values: string[][]; spreadsheetId: string; range: string }) => {
+    assertAuthSuccess();
+    
+    await gapi.client.sheets.spreadsheets.values.update({
+      spreadsheetId,
+      range,
       valueInputOption: 'USER_ENTERED',
       resource: {
-        values: [['hello world111122222']]
+        values
       }
     })
   });
@@ -101,6 +100,12 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
     auth,
     profile,
     updateSheets,
+  }
+
+  function assertAuthSuccess() {
+    if (auth.status !== 'success') {
+      throw new Error('Need authorize first');
+    }
   }
 });
 
