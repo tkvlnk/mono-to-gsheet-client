@@ -5,32 +5,6 @@ import { useAppendScript } from "../useAppendScript";
 
 const CLIENT_ID = '905474591291-suogt2amt9sqlop15te377an0ugbc7f9.apps.googleusercontent.com';
 
-type Prompt = '' | 'none' | 'consent' | 'select_account';
-
-type InitTokenClientConfig = {
-  client_id: string;
-  scope: string;
-  callback: '' | (() => void);
-  prompt: Prompt;
-}
-
-type TokenClient = {
-  callback: (resp: { error?: unknown }) => void;
-  requestAccessToken: (params: { prompt: '' | 'none' | 'consent' | 'select_account' }) => void;
-}
-
-declare global {
-  interface Window {
-    google: {
-      accounts: {
-        oauth2: {
-          initTokenClient: (config: InitTokenClientConfig) => TokenClient;
-        };
-      };
-    };
-  }
-}
-
 export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
   const gapiReady = useAppendScript('https://apis.google.com/js/api.js');
   const gsiReady = useAppendScript('https://accounts.google.com/gsi/client');
@@ -41,11 +15,31 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
       prepareGapi(gapiReady)
     ]);
 
+    console.log('scripts ready')
+
     return tokenClient;
   });
 
-  const auth = useAsync(() => authorizeApi(tokenClientPromise));
-  
+  const auth = useAsync(async (onlyCache: boolean = false) => {
+    await tokenClientPromise;
+    const LOCAL_STORAGE_ITEM = 'google-auth';
+    const cachedTokens = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITEM) ?? 'null');
+
+    if (cachedTokens) {
+      await gapiReady;
+      gapi.client.setToken(cachedTokens);
+      return cachedTokens;
+    } else if (onlyCache) {
+      throw new Error('No cached credentials');
+    }
+
+    const tokens = await authorizeApi(tokenClientPromise);
+    localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(tokens));
+    return tokens
+  }, {
+    autoRunWithParams: [true]
+  });
+
   const profile = useAsync(async () => {
     assertAuthSuccess();
 
@@ -86,33 +80,43 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
 
 async function prepareGapi(gapiReady: Promise<void>) {
   await gapiReady;
-  console.log('gapiReady')
-  await new Promise((resolve, reject) => {
-    gapi.load('client', { callback: resolve, onerror: reject });
-  });
+  await Promise.all([
+    new Promise((resolve, reject) => {
+      gapi.load('client', { callback: resolve, onerror: reject });
+    }),
+    new Promise((resolve, reject) => {
+      gapi.load('picker', { callback: resolve, onerror: reject });
+    }),
+  ]);
   await gapi.client.init({
     discoveryDocs: [
       'https://sheets.googleapis.com/$discovery/rest?version=v4', 
       'https://www.googleapis.com/discovery/v1/apis/people/v1/rest'
     ],
   });
+  console.log('gapi ready');
 }
 
 async function prepareGsi(gsiReady: Promise<void>) {
   await gsiReady;
-  console.log('gapiReady')
-  return new Promise<TokenClient>((resolve, reject) => {
+  console.log('gsi ready');
+  return new Promise<google.accounts.oauth2.TokenClient>((resolve, reject) => {
     try {
       const tokenClient = window.google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: [
           'https://www.googleapis.com/auth/spreadsheets',
           'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/userinfo.email'
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/drive.file',
+          'https://www.googleapis.com/auth/drive.readonly'
         ].join(' '),
         prompt: 'consent',
+        // @ts-expect-error: Using example from documentation. https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-asyncawait
         callback: '',  // defined at request time in await/promise scope.
       })
+
+      console.log('gsi ready');
 
       resolve(tokenClient);
     } catch (err) {
@@ -121,28 +125,27 @@ async function prepareGsi(gsiReady: Promise<void>) {
   });
 }
 
-async function authorizeApi(tokenClientPromise: Promise<TokenClient>) {
+async function authorizeApi(tokenClientPromise: Promise<google.accounts.oauth2.TokenClient>) {
+  console.log('authorizeApi');
+  
   const tokenClient = await tokenClientPromise;
 
   const result = new Promise<GoogleApiOAuth2TokenObject>((resolve, reject) => {
+    // @ts-expect-error: Using example from documentation. https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-asyncawait
     tokenClient.callback = (resp) => {
       if (resp.error !== undefined) {
         reject(resp);
         return;
       }
-      console.log('gapi.client access token: ' + JSON.stringify(gapi.client.getToken()));
 
       resolve(gapi.client.getToken())
     }
   });
 
   if (gapi.client.getToken() === null) {
-    // Prompt the user to select a Google Account and asked for consent to share their data
-    // when establishing a new session.
     tokenClient.requestAccessToken({ prompt: '' });
   } else {
-    // Skip display of account chooser and consent dialog for an existing session.
-    tokenClient.requestAccessToken({ prompt: '' });
+    tokenClient.requestAccessToken({ prompt: 'consent' });
   }
 
   return result

@@ -14,6 +14,12 @@ dependencies:
   '@types/gapi.client.sheets-v4':
     specifier: ^0.0.4
     version: 0.0.4
+  '@types/google.accounts':
+    specifier: ^0.0.14
+    version: 0.0.14
+  '@types/google.picker':
+    specifier: ^0.0.42
+    version: 0.0.42
   '@types/gsi':
     specifier: ^0.0.4
     version: 0.0.4
@@ -581,8 +587,8 @@ packages:
       '@types/gapi.client.discovery-v1': 0.0.4
     dev: false
 
-  /@maxim_mazurok/gapi.client.people-v1@0.0.20240109:
-    resolution: {integrity: sha512-eZqWN7mi/C+p1mTxWAsZpYw58eUqZKIzPfd/pAUs8Afjd1bLu4s5fr4Huk+3HcaxUOeS0PIni9sE3Hkr5y9lvg==}
+  /@maxim_mazurok/gapi.client.people-v1@0.0.20240110:
+    resolution: {integrity: sha512-IrTKjACl+zqASLNSvoOPBw+H/QlaYTE5jqF/ui8VCruWePXP+1Qk0XVwimVYYtT5/0AzF+8G/QYiOys8tzydxw==}
     dependencies:
       '@types/gapi.client': 1.0.8
       '@types/gapi.client.discovery-v1': 0.0.4
@@ -748,7 +754,7 @@ packages:
   /@types/gapi.client.people-v1@0.0.4:
     resolution: {integrity: sha512-gn0ET15woQxTWfbmasznFO33oXGQNnQN/WrHLSQnXy+4DlZXUH/DEh05CO2yupsezHIjGS4IYL28Oo6RuWoFNQ==}
     dependencies:
-      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240109
+      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240110
     dev: false
 
   /@types/gapi.client.sheets-v4@0.0.4:
@@ -763,6 +769,14 @@ packages:
 
   /@types/gapi@0.0.47:
     resolution: {integrity: sha512-/ZsLuq6BffMgbKMtZyDZ8vwQvTyKhKQ1G2K6VyWCgtHHhfSSXbk4+4JwImZiTjWNXfI2q1ZStAwFFHSkNoTkHA==}
+    dev: false
+
+  /@types/google.accounts@0.0.14:
+    resolution: {integrity: sha512-HqIVkVzpiLWhlajhQQd4rIV7czanFvXblJI2J1fSrL+VKQuQwwZ63m35D/mI0flsqKE6p/hNrAG0Yn4FD6JvNA==}
+    dev: false
+
+  /@types/google.picker@0.0.42:
+    resolution: {integrity: sha512-7Ut1zDLCGNhyN+0fuIcncpBP9eUsIjLKz6qmVKvdkBUi1EzAskxTcIZcU/w2cO1ens/hEXlqeLd5qAKs/Kqqyw==}
     dev: false
 
   /@types/gsi@0.0.4:
