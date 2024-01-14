@@ -16,7 +16,7 @@ export function GoogleSignInBar() {
       return <div>Signing in...</div>;
     }
 
-    return <button onClick={() => auth.execute()}>Sign in via google</button>;
+    return <button className="button" onClick={() => auth.execute()}>Sign in via google</button>;
   }
 
   if (profile.status === 'pending') {
@@ -24,6 +24,19 @@ export function GoogleSignInBar() {
   }
 
   if (profile.status === 'success') {
-    return <pre>{JSON.stringify(profile.data, null, 2)}</pre>;
+    return (
+      <div className="media block">
+        <div className="media-left">
+          <img className="image is-48x48" src={profile.data?.picture} alt="Google profile picture" />
+        </div>
+        <div className="media-content">
+          <b>{profile.data?.name}</b>
+          <div>{profile.data?.email}</div>
+        </div>
+        <div className="media-right">
+          <button className="button is-light">Sign out</button>
+        </div>
+      </div>
+    );
   }
 }

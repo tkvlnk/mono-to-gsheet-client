@@ -31,9 +31,16 @@ export function useAsync<T extends (...args: never[]) => Promise<unknown>>(async
       setState(prev => ({ ...prev, status: "success", data: data as Awaited<ReturnType<T>>, error: null }))
     } catch (error) {
       console.error(error);
-      setState(prev => ({ ...prev, status: "error", data: null, error: error.message }));
+      setState(prev => ({ ...prev, status: "error", data: null, error: (error as Error).message }));
     }
   };
+
+  const reset = () => setState((prev) => ({
+    ...prev,
+    status: "idle",
+    data: null,
+    error: null,
+  }))
 
   useEffect(() => {
     if (autoRunWithParams) {
@@ -45,5 +52,6 @@ export function useAsync<T extends (...args: never[]) => Promise<unknown>>(async
   return {
     ...state,
     execute,
+    reset,
   }
 }

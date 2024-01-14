@@ -4,7 +4,12 @@ import { SheetPicker } from "./components/SheetPicker";
 
 export default function App() {
   return <GoogleApisFacadeProvider>
-    <GoogleSignInBar />
-    <SheetPicker />
+    <div className="section">
+      <div className="box"></div>
+      <div className="box">
+        <GoogleSignInBar />
+        <SheetPicker />
+      </div>
+    </div>
   </GoogleApisFacadeProvider>
 }

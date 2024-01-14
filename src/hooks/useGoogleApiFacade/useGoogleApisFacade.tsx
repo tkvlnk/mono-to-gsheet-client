@@ -4,6 +4,18 @@ import { useAsync } from "../useAsync";
 import { useAppendScript } from "../useAppendScript";
 
 const CLIENT_ID = '905474591291-suogt2amt9sqlop15te377an0ugbc7f9.apps.googleusercontent.com';
+const LOCAL_STORAGE_ITEM = 'google-auth';
+
+type GoogleUserProfile = {
+  id: string;
+  email: string;
+  verified_email: boolean;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+  locale: string;
+};
 
 export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
   const gapiReady = useAppendScript('https://apis.google.com/js/api.js');
@@ -22,8 +34,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
 
   const auth = useAsync(async (onlyCache: boolean = false) => {
     await tokenClientPromise;
-    const LOCAL_STORAGE_ITEM = 'google-auth';
-    const cachedTokens = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITEM) ?? 'null');
+    const cachedTokens = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITEM) ?? 'null') as null | GoogleApiOAuth2TokenObject;
 
     if (cachedTokens) {
       await gapiReady;
@@ -49,7 +60,13 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
       }
     });
 
-    return res.json();
+    if (!res.ok) {
+      localStorage.removeItem(LOCAL_STORAGE_ITEM);
+      auth.reset();
+      throw new Error('Profile request failed');
+    }
+
+    return res.json() as Promise<GoogleUserProfile>;
   });
 
   const updateSheets = useAsync(async ({ range, values, spreadsheetId }: { values: string[][]; spreadsheetId: string; range: string }) => {
@@ -69,6 +86,12 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
     auth,
     profile,
     updateSheets,
+    getAccessToken: () => {
+      if (!auth.data?.access_token) {
+        throw new Error('Access token not found');
+      }
+      return auth.data?.access_token;
+    }
   }
 
   function assertAuthSuccess() {
