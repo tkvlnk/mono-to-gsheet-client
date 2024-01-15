@@ -33,13 +33,17 @@ export type ClientInfo = {
 
 export async function getClientInfo(this: MonobankApiFacadeContext) {
   const response = await fetch(
-    "https://api.monobank.ua/personal/client-info",
+    `https://no-cors.t-a-kvlnk.workers.dev/?uri=${encodeURIComponent(`https://api.monobank.ua/personal/client-info`)}`,
     {
       headers: {
         "X-Token": this.apiKey,
       },
     },
   );
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
 
   return response.json() as Promise<ClientInfo>;
 }

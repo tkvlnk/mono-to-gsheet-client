@@ -13,7 +13,7 @@ export function MonoApiKeyInput() {
     if (inputValue) {
       localStorage.setItem(LOCAL_STORAGE_ITEM, inputValue);
       updateApiKey(inputValue);
-      clientInfo.execute();
+      clientInfo.execute().catch();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
