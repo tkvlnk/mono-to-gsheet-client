@@ -32,14 +32,14 @@ export type ClientInfo = {
 };
 
 export async function getClientInfo(this: MonobankApiFacadeContext) {
-    const response = await fetch(
-      "https://api.monobank.ua/personal/client-info",
-      {
-        headers: {
-          "X-Token": this.apiKey,
-        },
+  const response = await fetch(
+    "https://api.monobank.ua/personal/client-info",
+    {
+      headers: {
+        "X-Token": this.apiKey,
       },
-    );
+    },
+  );
 
-    return response.json() as Promise<ClientInfo>;
-  }
+  return response.json() as Promise<ClientInfo>;
+}

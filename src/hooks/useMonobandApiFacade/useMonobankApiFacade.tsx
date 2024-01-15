@@ -2,26 +2,28 @@ import constate from "constate";
 import { useAsync } from "../useAsync";
 import { getClientInfo } from "./getClientInfo";
 import { getStatements } from "./getStatements";
-import { useState } from "react";
+import { useRef } from "react";
 
 export type MonobankApiFacadeContext = { apiKey: string };
 
 export const [MonobankApiFacadeProvider, useMonobankApiFacade] = constate(() => {
-  const [apiKey, setApiKey] = useState(null as string | null);
+  const apiKey = useRef<string | null>(null);
   
   const sharedContext = {
     get apiKey() {
-      if (!apiKey) {
+      if (!apiKey.current) {
         throw new Error('apiKey is not defined');
       }
-      return apiKey;
+      return apiKey.current;
     }
   }
   
   return {
     clientInfo: useAsync(getClientInfo.bind(sharedContext)),
     getStatements: useAsync(getStatements.bind(sharedContext)),
-    updateApiKey: (newApiKey: string) => setApiKey(newApiKey),
+    updateApiKey: (newApiKey: string) => {
+      apiKey.current = newApiKey;
+    },
   };
 });
 

@@ -11,16 +11,12 @@ export function GoogleSignInBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.status]);
 
-  if (auth.status !== 'success') {
-    if (auth.status === 'pending') {
-      return <div>Signing in...</div>;
-    }
-
-    return <button className="button" onClick={() => auth.execute()}>Sign in via google</button>;
+  if (auth.status === 'pending' || profile.status === 'pending') {
+    return <progress className="progress" max="100" />;
   }
 
-  if (profile.status === 'pending') {
-    return <div>Fetching profile...</div>;
+  if (auth.status !== 'success') {
+    return <button className="button" onClick={() => auth.execute()}>Sign in via google</button>;
   }
 
   if (profile.status === 'success') {
