@@ -29,8 +29,6 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
       prepareGapi(gapiReady)
     ]);
 
-    console.log('scripts ready')
-
     return tokenClient;
   });
 
@@ -119,12 +117,11 @@ async function prepareGapi(gapiReady: Promise<void>) {
       'https://www.googleapis.com/discovery/v1/apis/people/v1/rest'
     ],
   });
-  console.log('gapi ready');
 }
 
 async function prepareGsi(gsiReady: Promise<void>) {
   await gsiReady;
-  console.log('gsi ready');
+  
   return new Promise<google.accounts.oauth2.TokenClient>((resolve, reject) => {
     try {
       const tokenClient = window.google.accounts.oauth2.initTokenClient({
@@ -140,9 +137,6 @@ async function prepareGsi(gsiReady: Promise<void>) {
         // @ts-expect-error: Using example from documentation. https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-asyncawait
         callback: '',  // defined at request time in await/promise scope.
       })
-
-      console.log('gsi ready');
-
       resolve(tokenClient);
     } catch (err) {
       reject(err);
