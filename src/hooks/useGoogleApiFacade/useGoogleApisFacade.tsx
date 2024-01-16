@@ -2,9 +2,9 @@ import constate from "constate";
 import { useState } from "react";
 import { useAsync } from "../useAsync";
 import { useAppendScript } from "../useAppendScript";
+import { LocalStorageCache } from "../../utils/LocalStorageCache";
 
 const CLIENT_ID = '905474591291-suogt2amt9sqlop15te377an0ugbc7f9.apps.googleusercontent.com';
-const LOCAL_STORAGE_ITEM = 'google-auth';
 
 type GoogleUserProfile = {
   id: string;
@@ -16,6 +16,8 @@ type GoogleUserProfile = {
   picture: string;
   locale: string;
 };
+
+const authCache = new LocalStorageCache<GoogleApiOAuth2TokenObject>('google-auth');
 
 export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
   const gapiReady = useAppendScript('https://apis.google.com/js/api.js');
@@ -34,7 +36,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
 
   const auth = useAsync(async (onlyCache: boolean = false) => {
     await tokenClientPromise;
-    const cachedTokens = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITEM) ?? 'null') as null | GoogleApiOAuth2TokenObject;
+    const cachedTokens = authCache.get();
 
     if (cachedTokens) {
       await gapiReady;
@@ -45,7 +47,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
     }
 
     const tokens = await authorizeApi(tokenClientPromise);
-    localStorage.setItem(LOCAL_STORAGE_ITEM, JSON.stringify(tokens));
+    authCache.set(tokens);
     return tokens
   }, {
     autoRunWithParams: [true]
@@ -61,7 +63,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
     });
 
     if (!res.ok) {
-      localStorage.removeItem(LOCAL_STORAGE_ITEM);
+      authCache.clear();
       auth.reset();
       throw new Error('Profile request failed');
     }

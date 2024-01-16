@@ -1,3 +1,4 @@
+import { LocalStorageCache } from "../../utils/LocalStorageCache";
 import type { MonobankApiFacadeContext } from "./useMonobankApiFacade";
 
 export type Account = {
@@ -31,7 +32,15 @@ export type ClientInfo = {
   jars: Jar[];
 };
 
+const clientInfoCache = new LocalStorageCache<{ clientInfo: ClientInfo; apiKey: string }>('client-info-cache');
+
 export async function getClientInfo(this: MonobankApiFacadeContext) {
+  const cached = clientInfoCache.get();
+
+  if (cached && cached.apiKey === this.apiKey) {
+    return cached.clientInfo
+  }
+
   const response = await fetch(
     `https://no-cors.t-a-kvlnk.workers.dev/?uri=${encodeURIComponent(`https://api.monobank.ua/personal/client-info`)}`,
     {
@@ -45,5 +54,12 @@ export async function getClientInfo(this: MonobankApiFacadeContext) {
     throw new Error(`Request failed with status ${response.status}`);
   }
 
-  return response.json() as Promise<ClientInfo>;
+  const clientInfo = await response.json() as ClientInfo;
+
+  clientInfoCache.set({
+    apiKey: this.apiKey,
+    clientInfo,
+  });
+
+  return clientInfo;
 }
