@@ -1,4 +1,5 @@
 import { useMonobankApiFacade } from '../hooks/useMonobandApiFacade/useMonobankApiFacade'
+import { currencyNumberToCode } from '../utils/currencyNumberToCode';
 
 export function MonoAccountSelector() {
   const { clientInfo } = useMonobankApiFacade();
@@ -15,10 +16,16 @@ export function MonoAccountSelector() {
       <div className="control">
         <div className="select">
           <select>
+            <option>Рахунок не обрано</option>
             {clientInfo.data?.accounts
               .filter(account => account.maskedPan.length)
               .map(account => (
-                <option key={account.id} value={account.id}>{account.maskedPan.join(', ')}</option>
+                <option
+                  key={account.id}
+                  value={account.id}
+                >
+                  {`${currencyNumberToCode(account.currencyCode)} ${account.type} - ${account.maskedPan.join(', ')}`}
+                </option>
               ))}
           </select>
         </div>
@@ -26,3 +33,4 @@ export function MonoAccountSelector() {
     </div>
   )
 }
+
