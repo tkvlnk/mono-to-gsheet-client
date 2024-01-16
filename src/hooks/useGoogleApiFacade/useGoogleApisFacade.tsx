@@ -122,25 +122,18 @@ async function prepareGapi(gapiReady: Promise<void>) {
 async function prepareGsi(gsiReady: Promise<void>) {
   await gsiReady;
   
-  return new Promise<google.accounts.oauth2.TokenClient>((resolve, reject) => {
-    try {
-      const tokenClient = window.google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: [
-          'https://www.googleapis.com/auth/spreadsheets',
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/userinfo.email',
-          'https://www.googleapis.com/auth/drive.file',
-          'https://www.googleapis.com/auth/drive.readonly'
-        ].join(' '),
-        prompt: 'consent',
-        // @ts-expect-error: Using example from documentation. https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-asyncawait
-        callback: '',  // defined at request time in await/promise scope.
-      })
-      resolve(tokenClient);
-    } catch (err) {
-      reject(err);
-    }
+  return window.google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: [
+      'https://www.googleapis.com/auth/spreadsheets',
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/drive.file',
+      'https://www.googleapis.com/auth/drive.readonly'
+    ].join(' '),
+    prompt: 'consent',
+    // @ts-expect-error: Using example from documentation. https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-asyncawait
+    callback: '',  // defined at request time in await/promise scope.
   });
 }
 
