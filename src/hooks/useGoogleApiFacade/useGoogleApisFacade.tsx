@@ -33,7 +33,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
   });
 
   const auth = useAsync(async (onlyCache: boolean = false) => {
-    await tokenClientPromise;
+    const tokenClient = await tokenClientPromise;
     const cachedTokens = authCache.get();
 
     if (cachedTokens) {
@@ -44,7 +44,7 @@ export const [GoogleApisFacadeProvider, useGoogleApisFacade] = constate(() => {
       throw new Error('No cached credentials');
     }
 
-    const tokens = await authorizeApi(tokenClientPromise);
+    const tokens = await authorizeApi(tokenClient);
     authCache.set(tokens);
     return tokens
   }, {
@@ -137,11 +137,7 @@ async function prepareGsi(gsiReady: Promise<void>) {
   });
 }
 
-async function authorizeApi(tokenClientPromise: Promise<google.accounts.oauth2.TokenClient>) {
-  console.log('authorizeApi');
-  
-  const tokenClient = await tokenClientPromise;
-
+async function authorizeApi(tokenClient: google.accounts.oauth2.TokenClient) {
   const result = new Promise<GoogleApiOAuth2TokenObject>((resolve, reject) => {
     // @ts-expect-error: Using example from documentation. https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-asyncawait
     tokenClient.callback = (resp) => {
