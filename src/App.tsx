@@ -5,6 +5,7 @@ import { MonoApiKeyInput } from "./components/MonoApiKeyInput";
 import { MonobankApiFacadeProvider } from "./hooks/useMonobandApiFacade/useMonobankApiFacade";
 import { MonoAccountSelector } from "./components/MonoAccountSelector";
 import { PeriodPicker } from "./components/PeriodPicker";
+import { ProcessingBar } from "./components/ProcessingBar";
 
 export default function App() {
   return (
@@ -19,6 +20,9 @@ export default function App() {
           <div className="box">
             <GoogleSignInBar />
             <SheetPicker />
+          </div>
+          <div className="box">
+            <ProcessingBar />
           </div>
         </div>
       </MonobankApiFacadeProvider>

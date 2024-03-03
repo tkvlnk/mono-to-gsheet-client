@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { useGoogleApisFacade } from "../hooks/useGoogleApiFacade/useGoogleApisFacade";
 import { googleAuthGuard } from "../hooks/useGoogleApiFacade/googleAuthGuard";
+import { useStore } from "../hooks/useStore";
 
 export const SheetPicker = googleAuthGuard(() => {
-  const [sheet, onSheetSelected] = useState(null as null | { id: string; name: string });
+  const sheet = {
+    id: useStore(({ sheet }) => sheet?.id),
+    name: useStore(({ sheet }) => sheet?.name),
+  };
+const onSheetSelected = useStore((state) => state.setSheet);
+
   const { getAccessToken } = useGoogleApisFacade();
 
   const [picker] = useState(() =>
@@ -25,14 +31,14 @@ export const SheetPicker = googleAuthGuard(() => {
       className={`button ${sheet ? 'is-light' : 'is-primary'}`}
       onClick={() => picker.setVisible(true)}
     >
-      {sheet ? "Змінити" : "Обрати"} таблицю
+      {sheet.id ? "Змінити" : "Обрати"} таблицю
     </button>
   )
 
   return (
     <div className="field">
-      <label className="label">Гугл таблиця в які експортувати дані:</label>
-      {sheet && (
+      <label className="label">Гугл таблиця в яку експортувати дані:</label>
+      {sheet.id && (
         <div className="field is-grouped">
           <div className="control block is-flex is-align-items-center">
             {sheet.name} (id: {sheet.id})
@@ -42,7 +48,7 @@ export const SheetPicker = googleAuthGuard(() => {
           </div>
         </div>
       )}
-      {!sheet && <div className="control">
+      {!sheet.id && <div className="control">
         {pickerBtn}
       </div>}
     </div>

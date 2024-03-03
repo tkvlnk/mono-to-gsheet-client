@@ -1,14 +1,26 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo } from "react";
 import {  } from "date-fns";
+import { useStore } from "../hooks/useStore";
+import { monthNames } from "../utils/monthNames";
 
 const currentYear = new Date().getFullYear();
 const currentMonth = new Date().getMonth();
 
 export function PeriodPicker() {
-  const [monthIndex, setMonthIndex] = useState(currentMonth);
-  const [year, setYear] = useState(currentYear);
+  const monthIndex = useStore((state) => state.monthIndex);
+  const setMonthIndex = useStore((state) => state.setMonthIndex);
+  const year = useStore((state) => state.year);
+  const setYear = useStore((state) => state.setYear);
 
   const years = useMemo(() => [...Array(5)].reverse(), [])
+
+  useLayoutEffect(() => {
+    setMonthIndex(currentMonth);
+  }, [setMonthIndex]);
+
+  useLayoutEffect(() => {
+    setYear(currentYear);
+  }, [setYear]);
 
   const filteredMonthNames = useMemo(() => monthNames.filter((_, monthIndex) => {
     if (year === currentYear) {
@@ -30,6 +42,7 @@ export function PeriodPicker() {
               <div className="select">
                 <select
                   value={year}
+                  onSelect={(e) => console.log('select', e)}
                   onChange={({ target: { value } }) => setYear(Number(value))}
                 >
                   {years.map((_, index) => (
@@ -64,53 +77,3 @@ export function PeriodPicker() {
   )
 }
 
-const monthNames = [
-  {
-    ua: 'Січень',
-    en: 'January'
-  },
-  {
-    ua: 'Лютий',
-    en: 'February'
-  },
-  {
-    ua: 'Березень',
-    en: 'March'
-  },
-  {
-    ua: 'Квітень',
-    en: 'April'
-  },
-  {
-    ua: 'Травень',
-    en: 'May'
-  },
-  {
-    ua: 'Червень',
-    en: 'June'
-  },
-  {
-    ua: 'Липень',
-    en: 'July'
-  },
-  {
-    ua: 'Серпень',
-    en: 'August'
-  },
-  {
-    ua: 'Вересень',
-    en: 'September'
-  },
-  {
-    ua: 'Жовтень',
-    en: 'October'
-  },
-  {
-    ua: 'Листопад',
-    en: 'November'
-  },
-  {
-    ua: 'Грудень',
-    en: 'December'
-  },
-];
