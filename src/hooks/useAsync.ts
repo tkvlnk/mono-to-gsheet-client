@@ -20,19 +20,27 @@ export function useAsync<T extends (...args: never[]) => Promise<unknown>>(async
   const [state, setState] = useState<AsyncState<T>>({
     status: "idle",
     data: null,
-    error: null ,
+    error: null,
     params: null,
   });
 
-  const execute = async (...params: Parameters<T>) => {
+  const executeStrict = async (...params: Parameters<T>) => {
     setState({ status: "pending", params, data: null, error: null });
     try {
       const data = await asyncFn(...params);
-      setState(prev => ({ ...prev, status: "success", data: data as Awaited<ReturnType<T>>, error: null }))
+      setState(prev => ({ ...prev, status: "success", data: data as Awaited<ReturnType<T>>, error: null }));
+      return data as Awaited<ReturnType<T>>;
     } catch (error) {
       console.error(error);
       setState(prev => ({ ...prev, status: "error", data: null, error: (error as Error).message }));
+      throw error;
     }
+  };
+
+  const execute = async (...params: Parameters<T>) => {
+    try {
+      await executeStrict(...params)
+    } catch { /* empty */ }
   };
 
   const reset = () => setState((prev) => ({
@@ -52,6 +60,7 @@ export function useAsync<T extends (...args: never[]) => Promise<unknown>>(async
   return {
     ...state,
     execute,
+    executeStrict,
     reset,
   }
 }
