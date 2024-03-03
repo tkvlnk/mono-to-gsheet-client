@@ -6,26 +6,29 @@ import { MonobankApiFacadeProvider } from "./hooks/useMonobandApiFacade/useMonob
 import { MonoAccountSelector } from "./components/MonoAccountSelector";
 import { PeriodPicker } from "./components/PeriodPicker";
 import { ProcessingBar } from "./components/ProcessingBar";
+import { StoreContext } from "./hooks/useStore";
 
 export default function App() {
   return (
-    <GoogleApisFacadeProvider>
-      <MonobankApiFacadeProvider>
-        <div className="section">
-          <div className="box">
-            <MonoApiKeyInput />
-            <MonoAccountSelector />
-            <PeriodPicker />
+    <StoreContext>
+      <GoogleApisFacadeProvider>
+        <MonobankApiFacadeProvider>
+          <div className="section">
+            <div className="box">
+              <MonoApiKeyInput />
+              <MonoAccountSelector />
+              <PeriodPicker />
+            </div>
+            <div className="box">
+              <GoogleSignInBar />
+              <SheetPicker />
+            </div>
+            <div className="box">
+              <ProcessingBar />
+            </div>
           </div>
-          <div className="box">
-            <GoogleSignInBar />
-            <SheetPicker />
-          </div>
-          <div className="box">
-            <ProcessingBar />
-          </div>
-        </div>
-      </MonobankApiFacadeProvider>
-    </GoogleApisFacadeProvider>
+        </MonobankApiFacadeProvider>
+      </GoogleApisFacadeProvider>
+    </StoreContext>
   )
 }

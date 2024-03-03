@@ -1,5 +1,7 @@
-import { create } from "zustand";
+import { createStore } from "zustand";
+import { useStoreWithEqualityFn } from "zustand/traditional";
 import { Account } from "./useMonobandApiFacade/getClientInfo";
+import constate from "constate";
 
 export type Store = {
   monthIndex?: number;
@@ -15,15 +17,25 @@ export type Store = {
   setAccount: (account: Account) => void;
 }
 
-export const useStore = create<Store>((set) => ({
-  setMonthIndex: (monthIndex) => set({
-    monthIndex
-  }),
-  setYear: (year) => set({
-    year
-  }),
-  setSheet: (sheet) => set({
-    sheet
-  }),
-  setAccount: (account) => set({ account })
-}))
+const [StoreContext, useStoreApi] = constate(() => {
+  const storeApi = createStore<Store>((set) => ({
+    setMonthIndex: (monthIndex) => set({
+      monthIndex
+    }),
+    setYear: (year) => set({
+      year
+    }),
+    setSheet: (sheet) => set({
+      sheet
+    }),
+    setAccount: (account) => set({ account })
+  }));
+
+  return storeApi;
+});
+
+export function useStore<R>(selector: (s: Store) => R, eq: (prev:R, next:R) => boolean) {
+  return useStoreWithEqualityFn(useStoreApi(), selector, eq);
+} 
+
+export { StoreContext };
