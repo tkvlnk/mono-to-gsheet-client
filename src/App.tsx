@@ -6,7 +6,7 @@ import { MonobankApiFacadeProvider } from "./hooks/useMonobandApiFacade/useMonob
 import { MonoAccountSelector } from "./components/MonoAccountSelector";
 import { PeriodPicker } from "./components/PeriodPicker";
 import { ProcessingBar } from "./components/ProcessingBar";
-import { StoreContext } from "./hooks/useStore";
+import { StoreContext } from "./hooks/useStore/useStore";
 
 export default function App() {
   return (

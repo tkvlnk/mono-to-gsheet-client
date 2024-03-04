@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGoogleApisFacade } from "../hooks/useGoogleApiFacade/useGoogleApisFacade";
 import { googleAuthGuard } from "../hooks/useGoogleApiFacade/googleAuthGuard";
-import { useStore } from "../hooks/useStore";
+import { useStore } from "../hooks/useStore/useStore";
 
 export const SheetPicker = googleAuthGuard(() => {
   const sheet = {

@@ -1,6 +1,6 @@
 
 import { useMonobankApiFacade } from '../hooks/useMonobandApiFacade/useMonobankApiFacade'
-import { useStore } from '../hooks/useStore';
+import { useStore } from '../hooks/useStore/useStore';
 import { currencyNumberToCode } from '../utils/currencyNumberToCode';
 
 export function MonoAccountSelector() {

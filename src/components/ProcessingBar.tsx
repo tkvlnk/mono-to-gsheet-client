@@ -1,6 +1,6 @@
 import { useGoogleApisFacade } from "../hooks/useGoogleApiFacade/useGoogleApisFacade";
 import { useMonobankApiFacade } from "../hooks/useMonobandApiFacade/useMonobankApiFacade";
-import { useStore } from "../hooks/useStore";
+import { useStore } from "../hooks/useStore/useStore";
 import { monthNames } from "../utils/monthNames";
 import { statementsToColumns } from "../utils/statementsToColumns";
 
