@@ -6,17 +6,17 @@ export function GoogleSignInBar() {
 
   useEffect(() => {
     if (auth.status === 'success') {
-      profile.execute();
+      profile.refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.status]);
 
-  if (auth.status === 'pending' || profile.status === 'pending') {
+  if (['idle', 'loading'].includes(auth.status) || ['idle', 'loading'].includes(profile.status)) {
     return <progress className="progress" max="100" />;
   }
 
   if (auth.status !== 'success') {
-    return <button className="button" onClick={() => auth.execute()}>Sign in via google</button>;
+    return <button className="button" onClick={() => auth.refetch()}>Sign in via google</button>;
   }
 
   if (profile.status === 'success') {

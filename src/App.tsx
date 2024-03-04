@@ -1,4 +1,3 @@
-import { GoogleApisFacadeProvider } from "./hooks/useGoogleApiFacade/useGoogleApisFacade";
 import { GoogleSignInBar } from "./components/GoogleSignInBar";
 import { SheetPicker } from "./components/SheetPicker";
 import { MonoApiKeyInput } from "./components/MonoApiKeyInput";
@@ -6,29 +5,30 @@ import { MonobankApiFacadeProvider } from "./hooks/useMonobandApiFacade/useMonob
 import { MonoAccountSelector } from "./components/MonoAccountSelector";
 import { PeriodPicker } from "./components/PeriodPicker";
 import { ProcessingBar } from "./components/ProcessingBar";
-import { StoreContext } from "./hooks/useStore/useStore";
+import { QueryClientProvider } from 'react-query/react';
+import { QueryClient } from 'react-query';
+
+const client = new QueryClient();
 
 export default function App() {
   return (
-    <StoreContext>
-      <GoogleApisFacadeProvider>
-        <MonobankApiFacadeProvider>
-          <div className="section">
-            <div className="box">
-              <MonoApiKeyInput />
-              <MonoAccountSelector />
-              <PeriodPicker />
-            </div>
-            <div className="box">
-              <GoogleSignInBar />
-              <SheetPicker />
-            </div>
-            <div className="box">
-              <ProcessingBar />
-            </div>
+    <QueryClientProvider client={client}>
+      <MonobankApiFacadeProvider>
+        <div className="section">
+          <div className="box">
+            <MonoApiKeyInput />
+            <MonoAccountSelector />
+            <PeriodPicker />
           </div>
-        </MonobankApiFacadeProvider>
-      </GoogleApisFacadeProvider>
-    </StoreContext>
+          <div className="box">
+            <GoogleSignInBar />
+            <SheetPicker />
+          </div>
+          <div className="box">
+            <ProcessingBar />
+          </div>
+        </div>
+      </MonobankApiFacadeProvider>
+    </QueryClientProvider>
   )
 }

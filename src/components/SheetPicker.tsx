@@ -8,13 +8,13 @@ export const SheetPicker = googleAuthGuard(() => {
     id: useStore(({ sheet }) => sheet?.id),
     name: useStore(({ sheet }) => sheet?.name),
   };
-const onSheetSelected = useStore((state) => state.setSheet);
+  const onSheetSelected = useStore((state) => state.setSheet);
 
   const { getAccessToken } = useGoogleApisFacade();
 
   const [picker] = useState(() =>
     new window.google.picker.PickerBuilder()
-      .addView(new window.google.picker.DocsView(window.google.picker.ViewId.SPREADSHEETS))
+      .addView(new window.google.picker.DocsView(window.google.picker.ViewId.SPREADSHEETS).setMode(window.google.picker.DocsViewMode.LIST))
       .setOAuthToken(getAccessToken())
       .setCallback((data) => {
         if (data[window.google.picker.Response.ACTION] === window.google.picker.Action.PICKED) {
