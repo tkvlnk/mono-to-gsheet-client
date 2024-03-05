@@ -26,9 +26,6 @@ dependencies:
   '@vitejs/plugin-basic-ssl':
     specifier: ^1.0.2
     version: 1.0.2(vite@5.0.11)
-  constate:
-    specifier: ^3.3.2
-    version: 3.3.2(react@18.2.0)
   date-fns:
     specifier: ^3.2.0
     version: 3.2.0
@@ -596,8 +593,8 @@ packages:
       '@types/gapi.client.discovery-v1': 0.0.4
     dev: false
 
-  /@maxim_mazurok/gapi.client.people-v1@0.0.20240227:
-    resolution: {integrity: sha512-xoZ3LeicK6sxIPFm0++EhuBf3LpGdSEbjvUcFAbjyT7tCAD88rFCxMcM8sl+gx51bCLpCIXqlMJk+nBYwO+8Yw==}
+  /@maxim_mazurok/gapi.client.people-v1@0.0.20240303:
+    resolution: {integrity: sha512-cfk2I2fFKFrh9PTHUCj7A6iY80cxoGnHZ2VdYGPcwr8zwRyp6iHIxD8hPAy1qqogQPKGusIpN+G7S1Q4POQNxQ==}
     dependencies:
       '@types/gapi.client': 1.0.8
       '@types/gapi.client.discovery-v1': 0.0.4
@@ -763,7 +760,7 @@ packages:
   /@types/gapi.client.people-v1@0.0.4:
     resolution: {integrity: sha512-gn0ET15woQxTWfbmasznFO33oXGQNnQN/WrHLSQnXy+4DlZXUH/DEh05CO2yupsezHIjGS4IYL28Oo6RuWoFNQ==}
     dependencies:
-      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240227
+      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240303
     dev: false
 
   /@types/gapi.client.sheets-v4@0.0.4:
@@ -1131,14 +1128,6 @@ packages:
 
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
-
-  /constate@3.3.2(react@18.2.0):
-    resolution: {integrity: sha512-ZnEWiwU6QUTil41D5EGpA7pbqAPGvnR9kBjko8DzVIxpC60mdNKrP568tT5WLJPAxAOtJqJw60+h79ot/Uz1+Q==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}

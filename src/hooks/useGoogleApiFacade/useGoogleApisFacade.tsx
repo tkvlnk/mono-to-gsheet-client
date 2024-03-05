@@ -1,14 +1,16 @@
+import { useMutation } from "react-query";
 import { useGoogleAuth } from "./useGoogleAuth";
 import { useProfile } from "./useProfile";
-import { useUpdateSheets } from "./useUpdateSheets";
+import { useStore } from "../useStore/useStore";
 
 export function useGoogleApisFacade() {
   const auth = useGoogleAuth();
+  const writeStatementsToSheet = useStore(s => s.writeStatementsToSheet);
 
   return {
     auth: useGoogleAuth(),
     profile: useProfile(),
-    updateSheets: useUpdateSheets(),
+    updateSheets: useMutation('updateSheets', writeStatementsToSheet),
     getAccessToken: () => {
       if (!auth.data?.access_token) {
         throw new Error('Access token not found');

@@ -1,50 +1,53 @@
-export const monthNames = [
+export const monthNames: {
+  code: string;
+  ua: string;
+}[] = [
   {
-    ua: 'Січень',
-    en: 'January'
+    ua: "Січень",
+    code: "JAN",
   },
   {
-    ua: 'Лютий',
-    en: 'February'
+    ua: "Лютий",
+    code: "FEB",
   },
   {
-    ua: 'Березень',
-    en: 'March'
+    ua: "Березень",
+    code: "MAR",
   },
   {
-    ua: 'Квітень',
-    en: 'April'
+    ua: "Квітень",
+    code: "ARP",
   },
   {
-    ua: 'Травень',
-    en: 'May'
+    ua: "Травень",
+    code: "MAY",
   },
   {
-    ua: 'Червень',
-    en: 'June'
+    ua: "Червень",
+    code: "JUN",
   },
   {
-    ua: 'Липень',
-    en: 'July'
+    ua: "Липень",
+    code: "JUL",
   },
   {
-    ua: 'Серпень',
-    en: 'August'
+    ua: "Серпень",
+    code: "AUG",
   },
   {
-    ua: 'Вересень',
-    en: 'September'
+    ua: "Вересень",
+    code: "SEP",
   },
   {
-    ua: 'Жовтень',
-    en: 'October'
+    ua: "Жовтень",
+    code: "OCT",
   },
   {
-    ua: 'Листопад',
-    en: 'November'
+    ua: "Листопад",
+    code: "NOV",
   },
   {
-    ua: 'Грудень',
-    en: 'December'
+    ua: "Грудень",
+    code: "DEC",
   },
 ];
