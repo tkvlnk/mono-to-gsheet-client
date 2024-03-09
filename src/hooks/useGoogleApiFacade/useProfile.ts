@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useGoogleAuth } from "./useGoogleAuth";
-import { authCache } from "./authCache";
+import { authCache } from "../useStore/authCache";
 
 export type GoogleUserProfile = {
   id: string;

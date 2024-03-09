@@ -11,7 +11,7 @@ export function Confirmation() {
 
   const loadFromMonoToSheet = useLoadFromMonoAndPutToGoogleSheet()
 
-  if (message) {
+  if (!message) {
     return;
   }
 

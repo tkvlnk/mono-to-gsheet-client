@@ -1,5 +1,5 @@
-import { LocalStorageCache } from "../../utils/LocalStorageCache";
-import type { MonobankApiFacadeContext } from "./useMonobankApiFacade";
+import { LocalStorageCache } from "../../../utils/LocalStorageCache";
+import { StoreCtx } from "../useStore";
 
 export type Account = {
   id: string;
@@ -34,30 +34,38 @@ export type ClientInfo = {
 
 const clientInfoCache = new LocalStorageCache<{ clientInfo: ClientInfo; apiKey: string }>('client-info-cache');
 
-export async function getClientInfo(this: MonobankApiFacadeContext) {
+export function monoClientInfo(
+  this: StoreCtx
+) {
+  return getClientInfo({  monoAuthToken: this.getState().getMonoAuthToken() });
+}
+
+async function getClientInfo({ monoAuthToken }: { monoAuthToken: string }) {
   const cached = clientInfoCache.get();
 
-  if (cached && cached.apiKey === this.apiKey) {
-    return cached.clientInfo
+  if (cached && cached.apiKey === monoAuthToken) {
+    return cached.clientInfo;
   }
 
   const response = await fetch(
-    `https://no-cors.t-a-kvlnk.workers.dev/?uri=${encodeURIComponent(`https://api.monobank.ua/personal/client-info`)}`,
+    `https://no-cors.t-a-kvlnk.workers.dev/?uri=${encodeURIComponent(
+      `https://api.monobank.ua/personal/client-info`
+    )}`,
     {
       headers: {
-        "X-Token": this.apiKey,
+        "X-Token": monoAuthToken,
       },
-    },
+    }
   );
 
   if (!response.ok) {
     throw new Error(`Request failed with status ${response.status}`);
   }
 
-  const clientInfo = await response.json() as ClientInfo;
+  const clientInfo = (await response.json()) as ClientInfo;
 
   clientInfoCache.set({
-    apiKey: this.apiKey,
+    apiKey: monoAuthToken,
     clientInfo,
   });
 

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { appendScript } from "../../utils/appendScript";
-import { authCache } from "./authCache";
+import { authCache } from "../useStore/authCache";
 
 const GOOGLE_TOKENS_CLIENT_QUERY_KEY = "GOOGLE_TOKENS_CLIENT";
 const GOOGLE_AUTH_TOKENS_QUERY_KEY = "GOOGLE_AUTH_TOKENS";

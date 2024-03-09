@@ -8,12 +8,10 @@ export function MonoApiKeyInput() {
   const { updateApiKey, clientInfo } = useMonobankApiFacade();
 
   useEffect(() => {
-    console.log(1)
-
     if (inputValue) {
       localStorage.setItem(LOCAL_STORAGE_ITEM, inputValue);
       updateApiKey(inputValue);
-      clientInfo.execute().catch();
+      clientInfo.refetch();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
@@ -31,7 +29,7 @@ export function MonoApiKeyInput() {
           value={inputValue}
           placeholder="Введіть токен доступу до апі монобанка"
           type="text"
-          className={`input ${clientInfo.status === 'pending' ? 'is-loading' : ''}`} 
+          className={`input ${clientInfo.status === 'loading' ? 'is-loading' : ''}`} 
           onChange={({ target: {value} }) => setInputValue(value)} 
         />
       </div>

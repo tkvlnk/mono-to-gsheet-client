@@ -1,4 +1,4 @@
-import { Statement } from "../hooks/useMonobandApiFacade/getStatements";
+import { Statement } from "../hooks/useStore/asyncMethods/monoStatements";
 
 const columnsOrder = [
   "id",

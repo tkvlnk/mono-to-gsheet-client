@@ -44,6 +44,9 @@ dependencies:
   zustand:
     specifier: ^4.5.2
     version: 4.5.2(@types/react@18.2.47)(react@18.2.0)
+  zustand-async-slices:
+    specifier: github:tkvlnk/zustand-async-slices#v1.1.0
+    version: github.com/tkvlnk/zustand-async-slices/26ba66831b8d632456ac7194ac565e3041e50008(zustand@4.5.2)
 
 devDependencies:
   '@types/react':
@@ -593,8 +596,8 @@ packages:
       '@types/gapi.client.discovery-v1': 0.0.4
     dev: false
 
-  /@maxim_mazurok/gapi.client.people-v1@0.0.20240303:
-    resolution: {integrity: sha512-cfk2I2fFKFrh9PTHUCj7A6iY80cxoGnHZ2VdYGPcwr8zwRyp6iHIxD8hPAy1qqogQPKGusIpN+G7S1Q4POQNxQ==}
+  /@maxim_mazurok/gapi.client.people-v1@0.0.20240306:
+    resolution: {integrity: sha512-KpxdT31XzQ5qJ2F7syNws+nbZtmunO9M2M+/kuwSXw7qdz220uQFnvSkmzpIVYfYhygbvVP6Xk8Z+I6XOpKpyg==}
     dependencies:
       '@types/gapi.client': 1.0.8
       '@types/gapi.client.discovery-v1': 0.0.4
@@ -760,7 +763,7 @@ packages:
   /@types/gapi.client.people-v1@0.0.4:
     resolution: {integrity: sha512-gn0ET15woQxTWfbmasznFO33oXGQNnQN/WrHLSQnXy+4DlZXUH/DEh05CO2yupsezHIjGS4IYL28Oo6RuWoFNQ==}
     dependencies:
-      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240303
+      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240306
     dev: false
 
   /@types/gapi.client.sheets-v4@0.0.4:
@@ -1979,6 +1982,12 @@ packages:
     hasBin: true
     dev: true
 
+  /typescript@5.4.2:
+    resolution: {integrity: sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: false
+
   /unload@2.2.0:
     resolution: {integrity: sha512-B60uB5TNBLtN6/LsgAf3udH9saB5p7gqJwcFfbOEZ8BcBHnGwCf6G/TGiEqkRAxX7zAFIUtzdrXQSdL3Q/wqNA==}
     dependencies:
@@ -2087,4 +2096,16 @@ packages:
       '@types/react': 18.2.47
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  github.com/tkvlnk/zustand-async-slices/26ba66831b8d632456ac7194ac565e3041e50008(zustand@4.5.2):
+    resolution: {tarball: https://codeload.github.com/tkvlnk/zustand-async-slices/tar.gz/26ba66831b8d632456ac7194ac565e3041e50008}
+    id: github.com/tkvlnk/zustand-async-slices/26ba66831b8d632456ac7194ac565e3041e50008
+    name: zustand-async-slices
+    version: 1.1.0
+    peerDependencies:
+      zustand: ^4.5.2
+    dependencies:
+      typescript: 5.4.2
+      zustand: 4.5.2(@types/react@18.2.47)(react@18.2.0)
     dev: false

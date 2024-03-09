@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useStore } from "../useStore/useStore";
 
 export type MonobankApiFacadeContext = { apiKey: string };
@@ -9,8 +9,10 @@ export function useMonobankApiFacade() {
   const getStatements = useStore(s => s.getStatements);
 
   return {
-    clientInfo: useMutation(getClientInfo),
-    getStatements: useMutation(getStatements),
+    clientInfo: useQuery('getClientInfo', getClientInfo, {
+      enabled: false,
+    }),
+    getStatements: useMutation('getStatements', getStatements),
     updateApiKey,
   };
 }
