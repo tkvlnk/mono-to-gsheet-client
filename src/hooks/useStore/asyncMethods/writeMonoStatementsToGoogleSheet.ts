@@ -3,15 +3,25 @@ import { statementsToColumns } from "../../../utils/statementsToColumns";
 import { StoreCtx } from "../useStore";
 
 export async function writeMonoStatementsToGoogleSheet(this: StoreCtx) {
+  console.log(1)
+
   const { sheet, monthIndex } = this.getState();
 
   if (!sheet?.id) {
     throw new Error("sheet.id is not defined");
   }
 
+console.log(2);
+
   if (typeof monthIndex === "undefined") {
     throw new Error("monthIndex is not defined");
   }
+
+console.log(3);
+
+  await this.getState().monoStatements.executeAsync();
+
+console.log(4);
 
   return writeStatementsToSheet({
     values: statementsToColumns(this.getState().monoStatements.get()),

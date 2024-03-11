@@ -1,11 +1,18 @@
 import { authCache } from "../authCache";
 import { StoreCtx } from "../useStore";
 
-export async function googleAuthTokens(this: StoreCtx) {
+export async function googleSignIn(this: StoreCtx, { cacheOnly = false } = {}) {
+  if (this.getState().googleTokenClient.isIdle()) {
+    await this.getState().googleTokenClient.executeAsync();
+  }
+  
   const cachedTokens = authCache.get();
 
   if (cachedTokens) {
+    gapi.client.setToken(cachedTokens);
     return cachedTokens;
+  } else if (cacheOnly) {
+    throw new Error("No cached tokens");
   }
 
   const tokens = await authorizeApi(this.getState().googleTokenClient.get());

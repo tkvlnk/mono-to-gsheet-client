@@ -1,10 +1,9 @@
 
-import { useMonobankApiFacade } from '../hooks/useMonobandApiFacade/useMonobankApiFacade'
 import { useStore } from '../hooks/useStore/useStore';
 import { currencyNumberToCode } from '../utils/currencyNumberToCode';
 
 export function MonoAccountSelector() {
-  const { clientInfo } = useMonobankApiFacade();
+  const clientInfo = useStore(s => s.monoClientInfo)
   const account = useStore(s => s.account);
   const setAccount = useStore(s => s.setAccount);
 

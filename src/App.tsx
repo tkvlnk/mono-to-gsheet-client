@@ -22,9 +22,7 @@ export default function App() {
           <GoogleSignInBar />
           <SheetPicker />
         </div>
-        <div className="box">
-          <Confirmation />
-        </div>
+        <Confirmation />
       </div>
     </QueryClientProvider>
   )

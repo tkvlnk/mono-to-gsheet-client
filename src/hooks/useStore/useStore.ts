@@ -5,22 +5,21 @@ import {
   asyncSlices,
 } from "zustand-async-slices";
 import {
-  Statement,
   monoStatements,
 } from "./asyncMethods/monoStatements";
-import { writeStatementsToSheet } from "../useGoogleApiFacade/writeStatementsToSheet";
-import { statementsToColumns } from "../../utils/statementsToColumns";
-import { monthNames } from "../../utils/monthNames";
 import { Account, monoClientInfo } from "./asyncMethods/monoClientInfo";
 import { googleTokenClient } from "./asyncMethods/googleTokenClient";
-import { googleAuthTokens } from "./asyncMethods/googleAuthTokens";
+import { googleSignIn } from "./asyncMethods/googleSignIn";
 import { writeMonoStatementsToGoogleSheet } from "./asyncMethods/writeMonoStatementsToGoogleSheet";
+import { googleProfile } from "./asyncMethods/googleProfile";
+import { devtools } from "zustand/middleware";
 
 const asyncMethods = {
   monoStatements,
   monoClientInfo,
   googleTokenClient,
-  googleAuthTokens,
+  googleSignIn,
+  googleProfile,
   writeMonoStatementsToGoogleSheet,
 };
 
@@ -46,33 +45,35 @@ export type Store = StateWithAsyncSlices<
 
 export type StoreCtx = AsyncSliceCtx<Store>;
 
-export const useStore = create<Store>(
-  asyncSlices(
-    (set, get) => ({
-      setMonthIndex: (monthIndex) =>
-        set({
-          monthIndex,
-        }),
-      setYear: (year) =>
-        set({
-          year,
-        }),
-      setSheet: (sheet) =>
-        set({
-          sheet,
-        }),
-      setAccount: (account) => set({ account }),
-      setMonoAuthToken: (monoAuthToken) => set({ monoAuthToken }),
-      getMonoAuthToken: () => {
-        const { monoAuthToken } = get();
+export const useStore = create<Store>()(
+  devtools(
+    asyncSlices(
+      (set, get) => ({
+        setMonthIndex: (monthIndex) =>
+          set({
+            monthIndex,
+          }),
+        setYear: (year) =>
+          set({
+            year,
+          }),
+        setSheet: (sheet) =>
+          set({
+            sheet,
+          }),
+        setAccount: (account) => set({ account }),
+        setMonoAuthToken: (monoAuthToken) => set({ monoAuthToken }),
+        getMonoAuthToken: () => {
+          const { monoAuthToken } = get();
 
-        if (!monoAuthToken) {
-          throw new Error("monoAuthToken is not defined");
-        }
+          if (!monoAuthToken) {
+            throw new Error("monoAuthToken is not defined");
+          }
 
-        return monoAuthToken;
-      },
-    }),
-    asyncMethods
+          return monoAuthToken;
+        },
+      }),
+      asyncMethods
+    )
   )
 );

@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { useGoogleApisFacade } from "../hooks/useGoogleApiFacade/useGoogleApisFacade";
-import { googleAuthGuard } from "../hooks/useGoogleApiFacade/googleAuthGuard";
 import { useStore } from "../hooks/useStore/useStore";
+import { googleAuthGuard } from "../hooks/useGoogleApiFacade/googleAuthGuard";
 
 export const SheetPicker = googleAuthGuard(() => {
-  const sheet = {
-    id: useStore(({ sheet }) => sheet?.id),
-    name: useStore(({ sheet }) => sheet?.name),
-  };
+  const sheetId = useStore(({ sheet }) => sheet?.id);
+  const sheetName = useStore(({ sheet }) => sheet?.name);
+  
   const onSheetSelected = useStore((state) => state.setSheet);
 
-  const { getAccessToken } = useGoogleApisFacade();
+  const accessToken = useStore((s) => s.googleSignIn.get().access_token);
 
   const [picker] = useState(() =>
     new window.google.picker.PickerBuilder()
       .addView(new window.google.picker.DocsView(window.google.picker.ViewId.SPREADSHEETS).setMode(window.google.picker.DocsViewMode.LIST))
-      .setOAuthToken(getAccessToken())
+      .setOAuthToken(accessToken)
       .setCallback((data) => {
         if (data[window.google.picker.Response.ACTION] === window.google.picker.Action.PICKED) {
           const { id, name } = data.docs[0];
@@ -28,27 +26,27 @@ export const SheetPicker = googleAuthGuard(() => {
 
   const pickerBtn = (
     <button
-      className={`button ${sheet ? 'is-light' : 'is-primary'}`}
+      className={`button ${sheetId ? 'is-light' : 'is-primary'}`}
       onClick={() => picker.setVisible(true)}
     >
-      {sheet.id ? "Змінити" : "Обрати"} таблицю
+      {sheetId ? "Змінити" : "Обрати"} таблицю
     </button>
   )
 
   return (
     <div className="field">
       <label className="label">Гугл таблиця в яку експортувати дані:</label>
-      {sheet.id && (
+      {sheetId && (
         <div className="field is-grouped">
           <div className="control block is-flex is-align-items-center">
-            {sheet.name} (id: {sheet.id})
+            {sheetName} (id: {sheetId})
           </div>
           <div className="control">
             {pickerBtn}
           </div>
         </div>
       )}
-      {!sheet.id && <div className="control">
+      {!sheetId && <div className="control">
         {pickerBtn}
       </div>}
     </div>

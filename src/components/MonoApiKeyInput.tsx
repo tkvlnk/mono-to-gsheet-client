@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { useMonobankApiFacade } from "../hooks/useMonobandApiFacade/useMonobankApiFacade";
+import { useStore } from "../hooks/useStore/useStore";
 
 const LOCAL_STORAGE_ITEM = 'mono-api-key';
 
 export function MonoApiKeyInput() {
   const [inputValue, setInputValue] = useState(() => localStorage.getItem(LOCAL_STORAGE_ITEM) ?? '');
-  const { updateApiKey, clientInfo } = useMonobankApiFacade();
+  const isClientInfoLoading = useStore((s) => s.monoClientInfo.isPending());
+  const refetchClientInfo = useStore((s) => s.monoClientInfo.execute);
+  const updateApiKey = useStore((s) => s.setMonoAuthToken);
 
   useEffect(() => {
     if (inputValue) {
       localStorage.setItem(LOCAL_STORAGE_ITEM, inputValue);
       updateApiKey(inputValue);
-      clientInfo.refetch();
+      refetchClientInfo();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
@@ -29,7 +31,7 @@ export function MonoApiKeyInput() {
           value={inputValue}
           placeholder="Введіть токен доступу до апі монобанка"
           type="text"
-          className={`input ${clientInfo.status === 'loading' ? 'is-loading' : ''}`} 
+          className={`input ${isClientInfoLoading ? 'is-loading' : ''}`} 
           onChange={({ target: {value} }) => setInputValue(value)} 
         />
       </div>

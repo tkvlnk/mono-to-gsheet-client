@@ -1,11 +1,23 @@
-import { ComponentType } from "react";
-import { useGoogleApisFacade } from "./useGoogleApisFacade";
+import { ComponentType, useEffect } from "react";
+import { useStore } from "../useStore/useStore";
 
 export function googleAuthGuard<P extends Record<string, unknown>>(Comp: ComponentType<P>): typeof Comp {
   return (props) => {
-    const { auth } = useGoogleApisFacade();
+    const initGoogleAuth = useStore((s) => () => {
+      if (!s.googleSignIn.isIdle()) {
+        return;
+      }
 
-    if (auth.status !== 'success') {
+      s.googleSignIn.execute({ cacheOnly: true })
+    });
+
+    useEffect(() => {
+      initGoogleAuth();
+    }, [])
+
+    const isGoogleAuthSuccess = useStore((s) => s.googleSignIn.isSuccess());
+
+    if (!isGoogleAuthSuccess) {
       return null;
     }
 
