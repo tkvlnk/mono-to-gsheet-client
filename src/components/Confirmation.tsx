@@ -1,5 +1,6 @@
 import { useStore } from "../hooks/useStore/useStore";
 import { monthNames } from "../utils/monthNames";
+import { GoogleSheetText } from "./GoogleSheetText";
 
 export function Confirmation() {
   const message = useConfirmationMessage();
@@ -31,12 +32,16 @@ function useConfirmationMessage() {
   const monthIndex = useStore(s => s.monthIndex);
   const year = useStore(s => s.year);
   const accountType = useStore(s => s.account?.type);
-  const sheetName = useStore(s => s.sheet?.name);
-  const sheetId = useStore(s => s.sheet?.id);
+  const sheet = useStore((s) => s.sheet);
   
-  if (typeof monthIndex === 'undefined' || !year || !accountType || !sheetName || !sheetId) {
+  if (typeof monthIndex === 'undefined' || !year || !accountType || !sheet) {
     return;
   }
 
-  return `Імпортувати дані по рахунку ${accountType} за ${monthNames[monthIndex].ua} ${year} в таблицю ${sheetName} (id: ${sheetId})`
+  return (
+    <div className="is-flex">
+      Імпортувати дані по рахунку {accountType} за ${monthNames[monthIndex].ua}{" "}
+      {year} в таблицю <GoogleSheetText sheet={sheet} />
+    </div>
+  );
 }
