@@ -13,12 +13,14 @@ import { googleSignIn } from "./asyncMethods/googleSignIn";
 import { writeMonoStatementsToGoogleSheet } from "./asyncMethods/writeMonoStatementsToGoogleSheet";
 import { googleProfile } from "./asyncMethods/googleProfile";
 import { devtools } from "zustand/middleware";
+import { googleSignOut } from "./asyncMethods/googleSignOut";
 
 const asyncMethods = {
   monoStatements,
   monoClientInfo,
   googleTokenClient,
   googleSignIn,
+  googleSignOut,
   googleProfile,
   writeMonoStatementsToGoogleSheet,
 };
@@ -38,7 +40,7 @@ export type Store = StateWithAsyncSlices<
     setAccount(account: Account): void;
     monoAuthToken?: string;
     getMonoAuthToken(): string;
-    setMonoAuthToken: (monoAuthToken: string) => void;
+    setMonoAuthToken(monoAuthToken: string): void;
   },
   typeof asyncMethods
 >;

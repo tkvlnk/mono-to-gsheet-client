@@ -4,15 +4,11 @@ import { MonoApiKeyInput } from "./components/MonoApiKeyInput";
 import { MonoAccountSelector } from "./components/MonoAccountSelector";
 import { PeriodPicker } from "./components/PeriodPicker";
 import { Confirmation } from "./components/Confirmation";
-import { QueryClientProvider } from 'react-query/react';
-import { QueryClient } from 'react-query';
-
-const client = new QueryClient();
 
 export default function App() {
   return (
-    <QueryClientProvider client={client}>
-      <div className="section">
+    <div className="section">
+      <div className="container is-desktop">
         <div className="box">
           <MonoApiKeyInput />
           <MonoAccountSelector />
@@ -24,6 +20,6 @@ export default function App() {
         </div>
         <Confirmation />
       </div>
-    </QueryClientProvider>
-  )
+    </div>
+  );
 }

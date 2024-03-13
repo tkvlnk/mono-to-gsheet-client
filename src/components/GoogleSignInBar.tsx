@@ -12,6 +12,8 @@ export function GoogleSignInBar() {
   const googleProfileName = useStore((s) => s.googleProfile.data?.name);
   const googleProfileEmail = useStore((s) => s.googleProfile.data?.email);
 
+  const googleSignOut = useStore((s) => s.googleSignOut.execute);
+
   useEffect(() => {
     if (googleAuthStatus === 'success') {
       fetchGoogleProfile();
@@ -43,7 +45,7 @@ export function GoogleSignInBar() {
           <div>{googleProfileEmail}</div>
         </div>
         <div className="media-right">
-          <button className="button is-light">Sign out</button>
+          <button className="button is-light" onClick={googleSignOut}>Sign out</button>
         </div>
       </div>
     );

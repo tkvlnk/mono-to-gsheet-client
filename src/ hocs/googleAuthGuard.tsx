@@ -1,5 +1,5 @@
 import { ComponentType, useEffect } from "react";
-import { useStore } from "../useStore/useStore";
+import { useStore } from "../hooks/useStore/useStore";
 
 export function googleAuthGuard<P extends Record<string, unknown>>(Comp: ComponentType<P>): typeof Comp {
   return (props) => {
