@@ -7,7 +7,7 @@ export function GoogleSheetText({
     <div
       style={{
         display: "flex",
-        gap: "0.5em",
+        gap: "0.25em",
       }}
     >
       <div>{name}</div>{" "}

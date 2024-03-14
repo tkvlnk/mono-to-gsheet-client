@@ -8,7 +8,7 @@ import { Confirmation } from "./components/Confirmation";
 export default function App() {
   return (
     <div className="section">
-      <div className="container is-desktop">
+      <div className="container is-max-desktop">
         <div className="box">
           <MonoApiKeyInput />
           <MonoAccountSelector />

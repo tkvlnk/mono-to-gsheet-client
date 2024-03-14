@@ -30,6 +30,12 @@ export function PeriodPicker() {
     return true;
   }), [year]);
 
+  const isAccountSelected = useStore((state) => !!state.account);
+
+  if (!isAccountSelected) {
+    return null;
+  }
+
   return (
     <div className="level is-mobile">
       <div className="level-left">

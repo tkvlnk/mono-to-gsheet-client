@@ -26,12 +26,12 @@ export function MonoApiKeyInput() {
           (його можна отримати <a target="_blank" className="is-underlined" href="https://api.monobank.ua/">тут</a>)
         </span>
       </label>
-      <div className="control">
+      <div className={`control  ${isClientInfoLoading ? 'is-loading' : ''}`}>
         <input
           value={inputValue}
           placeholder="Введіть токен доступу до апі монобанка"
           type="text"
-          className={`input ${isClientInfoLoading ? 'is-loading' : ''}`} 
+          className={`input`} 
           onChange={({ target: {value} }) => setInputValue(value)} 
         />
       </div>

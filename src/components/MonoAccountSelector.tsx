@@ -6,8 +6,9 @@ export function MonoAccountSelector() {
   const clientInfo = useStore(s => s.monoClientInfo)
   const account = useStore(s => s.account);
   const setAccount = useStore(s => s.setAccount);
+  const hasMonoAuthToken = useStore(s => !!s.monoAuthToken);
 
-  if (clientInfo.status !== 'success') {
+  if (!hasMonoAuthToken || clientInfo.status !== "success") {
     return null;
   }
 
@@ -25,7 +26,7 @@ export function MonoAccountSelector() {
               setAccount(selectedAccount);
             }
           }}>
-            <option>Рахунок не обрано</option>
+            {!account?.id && <option>Рахунок не обрано</option>}
             {clientInfo.data?.accounts
               .filter(acc => acc.maskedPan.length)
               .map(acc => (
