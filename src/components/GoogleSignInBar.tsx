@@ -1,48 +1,48 @@
 import { useEffect } from "react";
 import { useStore } from "../hooks/useStore/useStore";
+import cn from "classnames";
 
 export function GoogleSignInBar() {
-  const doGoogleAuth = useStore((s) => s.googleSignIn.execute);
-  const googleAuthStatus = useStore((s) => s.googleSignIn.status);
-  const isGoogleTokenClientSuccess = useStore((s) => s.googleTokenClient.isSuccess());
+  useAutofetchProfile();
+
+  return <SignInButton />;
+}
+
+function useAutofetchProfile() {
+  const shouldFetchProfile = useStore((s) =>
+    s.googleTokenClient.isSuccess() && s.googleSignIn.isSuccess()
+  );
   const fetchGoogleProfile = useStore((s) => s.googleProfile.execute);
-  const googleProfileStatus = useStore((s) => s.googleProfile.status);
-
-  const googleProfilePicture = useStore((s) => s.googleProfile.data?.picture);
-  const googleProfileName = useStore((s) => s.googleProfile.data?.name);
-  const googleProfileEmail = useStore((s) => s.googleProfile.data?.email);
-
-  const googleSignOut = useStore((s) => s.googleSignOut.execute);
 
   useEffect(() => {
-    if (googleAuthStatus === "success" && isGoogleTokenClientSuccess) {
+    if (shouldFetchProfile) {
       fetchGoogleProfile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [googleAuthStatus, isGoogleTokenClientSuccess]);
+  }, [shouldFetchProfile]);
+}
 
-  if (
-    googleAuthStatus !== "error" &&
-    (["idle", "loading"].includes(googleAuthStatus) ||
-      ["idle", "loading"].includes(googleProfileStatus))
-  ) {
+function CurrentGoogleProfile() {
+  const profileStatus = useStore((s) => s.googleProfile.status);
+  const profileError = useStore((s) => s.googleProfile.error?.message);
+
+  const picture = useStore((s) => s.googleProfile.data?.picture);
+  const name = useStore((s) => s.googleProfile.data?.name);
+  const email = useStore((s) => s.googleProfile.data?.email);
+
+  if (profileStatus === "pending") {
     return <progress className="progress" max="100" />;
   }
 
-  if (googleAuthStatus !== "success") {
+  if (profileStatus === "error") {
     return (
-      <button
-        className={`button ${
-          googleAuthStatus === "pending" ? "is-loading" : ""
-        }`}
-        onClick={() => doGoogleAuth()}
-      >
-        Sign in via google
-      </button>
+      <div className="notification is-danger">
+        Failed to fetch profile: {profileError}
+      </div>
     );
   }
 
-  if (googleProfileStatus !== "success") {
+  if (profileStatus !== "success") {
     return null;
   }
 
@@ -52,51 +52,53 @@ export function GoogleSignInBar() {
         <figure className="image is-24x24">
           <img
             className="is-rounded"
-            src={googleProfilePicture}
+            src={picture}
             alt="Google profile picture"
           />
         </figure>
       </div>
       <div className="media-content">
-        <b>{googleProfileName}</b> <span>({googleProfileEmail})</span>
+        <b>{name}</b> <span>({email})</span>
       </div>
       <div className="media-right">
-        <button className="button is-light is-small" onClick={googleSignOut}>
-          Sign out
-        </button>
+        <SignOutButton />
       </div>
     </div>
   );
+}
+
+function SignInButton() {
+  const googleAuthStatus = useStore((s) => s.googleSignIn.status);
+  const handleSignIn = useStore((s) => s.googleSignIn.execute);
+
+  if (googleAuthStatus === "success") {
+    return <CurrentGoogleProfile />;
+  }
 
   return (
-    <div className="is-flex is-align-content-center">
-
-
-      <b>{googleProfileName}</b>
-      <div>({googleProfileEmail})</div>
-    </div>
+    <button
+      className={cn("button", "is-primary", {
+        "is-loading": googleAuthStatus === 'pending',
+      })}
+      onClick={() => handleSignIn()}
+    >
+      Sign in via google
+    </button>
   );
+}
 
-  if (googleProfileStatus === "success") {
-    return (
-      <div className="media block">
-        <div className="media-left">
-          <img
-            className="image is-48x48"
-            src={googleProfilePicture}
-            alt="Google profile picture"
-          />
-        </div>
-        <div className="media-content">
-          <b>{googleProfileName}</b>
-          <div>{googleProfileEmail}</div>
-        </div>
-        <div className="media-right">
-          <button className={`button is-light`} onClick={googleSignOut}>
-            Sign out
-          </button>
-        </div>
-      </div>
-    );
-  }
+function SignOutButton() {
+  const handleSignOut = useStore((s) => s.googleSignOut.execute);
+  const isPending = useStore((s) => s.googleSignOut.isPending());
+
+  return (
+    <button
+      className={cn("button", {
+        "is-loading": isPending,
+      })}
+      onClick={handleSignOut}
+    >
+      Sign out
+    </button>
+  );
 }

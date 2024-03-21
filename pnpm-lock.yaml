@@ -26,6 +26,9 @@ dependencies:
   '@vitejs/plugin-basic-ssl':
     specifier: ^1.0.2
     version: 1.0.2(vite@5.0.11)
+  classnames:
+    specifier: ^2.5.1
+    version: 2.5.1
   date-fns:
     specifier: ^3.2.0
     version: 3.2.0
@@ -586,15 +589,15 @@ packages:
       '@types/gapi.client.discovery-v1': 0.0.4
     dev: false
 
-  /@maxim_mazurok/gapi.client.people-v1@0.0.20240311:
-    resolution: {integrity: sha512-utqimZjrkXLL8Q85NlE+9NcTtymCwVldTAE9xJxvIvut/6hcd958KXqtINV25XORGzdAUxy10Q1IMtUH50pL+w==}
+  /@maxim_mazurok/gapi.client.people-v1@0.0.20240319:
+    resolution: {integrity: sha512-+C7qEQQlHiVkBfLnBKsdu29GAsBhSgnTlXP2Mxcz16AIhp15uE3p98/gaYvOjkHYQDq6kIrp4uWG3tbfRBuFWw==}
     dependencies:
       '@types/gapi.client': 1.0.8
       '@types/gapi.client.discovery-v1': 0.0.4
     dev: false
 
-  /@maxim_mazurok/gapi.client.sheets-v4@0.0.20240305:
-    resolution: {integrity: sha512-zV9vUH2YKkzLPxU/qbKqXgyvR//wxOCis3UprVIqd57YNWd1lnpk+oy4JYUOkK39kr3eFtoN/bpwHg/PFi5zrA==}
+  /@maxim_mazurok/gapi.client.sheets-v4@0.0.20240318:
+    resolution: {integrity: sha512-Yf2t7YyYZ/Sdfwqihci44bf3UzthwaMmZP3v5eh+ST0W52WQtYwtit7RnM0SjjwI0LCk4B/r6aBAlYhstE59Hg==}
     dependencies:
       '@types/gapi.client': 1.0.8
       '@types/gapi.client.discovery-v1': 0.0.4
@@ -753,13 +756,13 @@ packages:
   /@types/gapi.client.people-v1@0.0.4:
     resolution: {integrity: sha512-gn0ET15woQxTWfbmasznFO33oXGQNnQN/WrHLSQnXy+4DlZXUH/DEh05CO2yupsezHIjGS4IYL28Oo6RuWoFNQ==}
     dependencies:
-      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240311
+      '@maxim_mazurok/gapi.client.people-v1': 0.0.20240319
     dev: false
 
   /@types/gapi.client.sheets-v4@0.0.4:
     resolution: {integrity: sha512-6kTJ7aDMAElfdQV1XzVJmZWjgbibpa84DMuKuaN8Cwqci/dkglPyHXKvsGrRugmuYvgFYr35AQqwz6j3q8R0dw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.sheets-v4': 0.0.20240305
+      '@maxim_mazurok/gapi.client.sheets-v4': 0.0.20240318
     dev: false
 
   /@types/gapi.client@1.0.8:
@@ -1081,6 +1084,10 @@ packages:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
     dev: true
+
+  /classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
+    dev: false
 
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
