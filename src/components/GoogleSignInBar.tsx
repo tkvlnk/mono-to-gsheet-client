@@ -7,7 +7,7 @@ export function GoogleSignInBar() {
   const googleAccessToken = useStore((s) => s.googleTokens?.access_token);
 
   useEffect(() => {
-    if (!googleAccessToken) {
+    if (!googleAccessToken || useStore.getState().googleProfile.status === "pending") {
       return;
     }
 
@@ -23,6 +23,8 @@ export function GoogleSignInBar() {
 }
 
 function CurrentGoogleProfile() {
+  console.log(useStore((s) => s.googleProfile.error));
+
   const profileError = useStore((s) => s.googleProfile.error?.message);
   const profileStatus = useStore((s) => s.googleProfile.status);
 
@@ -92,7 +94,7 @@ function SignOutButton() {
       className={cn("button", {
         "is-loading": isPending,
       })}
-      onClick={handleSignOut}
+      onClick={() => handleSignOut()}
     >
       Sign out
     </button>

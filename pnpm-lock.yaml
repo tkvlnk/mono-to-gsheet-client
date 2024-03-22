@@ -48,8 +48,8 @@ dependencies:
     specifier: ^4.5.2
     version: 4.5.2(@types/react@18.2.47)(react@18.2.0)
   zustand-async-slices:
-    specifier: github:tkvlnk/zustand-async-slices#v1.3.3
-    version: github.com/tkvlnk/zustand-async-slices/5b1c16b776055cd5ac9436423c1f70fd1e1c709e(zustand@4.5.2)
+    specifier: github:tkvlnk/zustand-async-slices#v1.4.0
+    version: github.com/tkvlnk/zustand-async-slices/9bd4ae5c726a52c42c1211576aaf588a5ef651d2(zustand@4.5.2)
 
 devDependencies:
   '@types/react':
@@ -2039,11 +2039,11 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/tkvlnk/zustand-async-slices/5b1c16b776055cd5ac9436423c1f70fd1e1c709e(zustand@4.5.2):
-    resolution: {tarball: https://codeload.github.com/tkvlnk/zustand-async-slices/tar.gz/5b1c16b776055cd5ac9436423c1f70fd1e1c709e}
-    id: github.com/tkvlnk/zustand-async-slices/5b1c16b776055cd5ac9436423c1f70fd1e1c709e
+  github.com/tkvlnk/zustand-async-slices/9bd4ae5c726a52c42c1211576aaf588a5ef651d2(zustand@4.5.2):
+    resolution: {tarball: https://codeload.github.com/tkvlnk/zustand-async-slices/tar.gz/9bd4ae5c726a52c42c1211576aaf588a5ef651d2}
+    id: github.com/tkvlnk/zustand-async-slices/9bd4ae5c726a52c42c1211576aaf588a5ef651d2
     name: zustand-async-slices
-    version: 1.3.3
+    version: 1.4.0
     peerDependencies:
       zustand: ^4.5.2
     dependencies:

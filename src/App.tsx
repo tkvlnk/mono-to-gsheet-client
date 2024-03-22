@@ -5,7 +5,7 @@ import { MonoAccountSelector } from "./components/MonoAccountSelector";
 import { PeriodPicker } from "./components/PeriodPicker";
 import { Confirmation } from "./components/Confirmation";
 import { useStore } from "./hooks/useStore/useStore";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function App() {
   useInitGoogleTokenClient();
@@ -31,7 +31,14 @@ export default function App() {
 function useInitGoogleTokenClient() {
   const initGoogleTokenClient = useStore((s) => s.googleTokenClient.execute);
 
+  const isStarted = useRef(false);
+
   useEffect(() => {
+    if (isStarted.current) {
+      return;
+    }
+
+    isStarted.current = true;
     initGoogleTokenClient();
   }, []);
 }

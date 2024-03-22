@@ -33,10 +33,5 @@ export async function googleProfile(this: StoreCtx) {
     throw new Error("Profile request failed");
   }
 
-  const result = await res.json().catch((e) => {
-    console.log(e);
-    throw e;
-  });
-
-  return result as Promise<GoogleUserProfile>;
+  return res.json() as Promise<GoogleUserProfile>;
 }

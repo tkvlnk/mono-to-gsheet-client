@@ -31,8 +31,12 @@ export const useStore = create<Store>()(
         setMonoAuthToken: (monoAuthToken) => {
           set({ monoAuthToken });
           if (monoAuthToken) {
-            localStorage.setItem(MONO_API_KEY, monoAuthToken);
-            get().monoClientInfo.execute();
+            try {
+              localStorage.setItem(MONO_API_KEY, monoAuthToken);
+              get().monoClientInfo.execute();
+            } catch {
+              /* empty */
+            }
           }
         },
         getMonoAuthToken: () => {
@@ -51,7 +55,6 @@ export const useStore = create<Store>()(
           });
 
           localStorage.setItem(GOOGLE_TOKENS, JSON.stringify(googleTokens));
-
           get().googleProfile.execute();
         },
       }),
