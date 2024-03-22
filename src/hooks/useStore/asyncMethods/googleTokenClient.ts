@@ -1,10 +1,17 @@
 import { appendScript } from "../../../utils/appendScript";
+import { StoreCtx } from "../useStore";
 
-export async function googleTokenClient() {
+export async function googleTokenClient(this: StoreCtx) {
   const [tokenClient] = await Promise.all([
     appendScript("https://accounts.google.com/gsi/client").then(prepareGsi),
     appendScript("https://apis.google.com/js/api.js").then(prepareGapi),
   ]);
+
+  const cachedTokens = this.getState().googleTokens;
+
+  if (cachedTokens) {
+    window.gapi.client.setToken(cachedTokens);
+  }
 
   return tokenClient;
 }

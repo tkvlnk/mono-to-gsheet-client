@@ -1,51 +1,14 @@
 import { create } from "zustand";
-import {
-  StateWithAsyncSlices,
-  AsyncSliceCtx,
-  asyncSlices,
-} from "zustand-async-slices";
-import {
-  monoStatements,
-} from "./asyncMethods/monoStatements";
-import { Account, monoClientInfo } from "./asyncMethods/monoClientInfo";
-import { googleTokenClient } from "./asyncMethods/googleTokenClient";
-import { googleSignIn } from "./asyncMethods/googleSignIn";
-import { writeMonoStatementsToGoogleSheet } from "./asyncMethods/writeMonoStatementsToGoogleSheet";
-import { googleProfile } from "./asyncMethods/googleProfile";
+import { AsyncSliceCtx, asyncSlices } from "zustand-async-slices";
 import { devtools } from "zustand/middleware";
-import { googleSignOut } from "./asyncMethods/googleSignOut";
+import { Store, asyncMethods } from "./types";
 
-const asyncMethods = {
-  monoStatements,
-  monoClientInfo,
-  googleTokenClient,
-  googleSignIn,
-  googleSignOut,
-  googleProfile,
-  writeMonoStatementsToGoogleSheet,
-};
-
-export type Store = StateWithAsyncSlices<
-  {
-    monthIndex?: number;
-    setMonthIndex(monthIndex: number): void;
-    year?: number;
-    setYear(year: number): void;
-    sheet?: {
-      id: string;
-      name: string;
-    };
-    setSheet(sheet: Store["sheet"]): void;
-    account?: Account;
-    setAccount(account: Account): void;
-    monoAuthToken?: string;
-    getMonoAuthToken(): string;
-    setMonoAuthToken(monoAuthToken: string): void;
-  },
-  typeof asyncMethods
->;
+export type { Store };
 
 export type StoreCtx = AsyncSliceCtx<Store>;
+
+const MONO_API_KEY = "mono-api-key";
+const GOOGLE_TOKENS = "google-tokens";
 
 export const useStore = create<Store>()(
   devtools(
@@ -64,7 +27,14 @@ export const useStore = create<Store>()(
             sheet,
           }),
         setAccount: (account) => set({ account }),
-        setMonoAuthToken: (monoAuthToken) => set({ monoAuthToken }),
+        monoAuthToken: localStorage.getItem(MONO_API_KEY) ?? undefined,
+        setMonoAuthToken: (monoAuthToken) => {
+          set({ monoAuthToken });
+          if (monoAuthToken) {
+            localStorage.setItem(MONO_API_KEY, monoAuthToken);
+            get().monoClientInfo.execute();
+          }
+        },
         getMonoAuthToken: () => {
           const { monoAuthToken } = get();
 
@@ -73,6 +43,16 @@ export const useStore = create<Store>()(
           }
 
           return monoAuthToken;
+        },
+        googleTokens: JSON.parse(localStorage.getItem(GOOGLE_TOKENS) ?? "null"),
+        setGoogleTokens: (googleTokens) => {
+          set({
+            googleTokens,
+          });
+
+          localStorage.setItem(GOOGLE_TOKENS, JSON.stringify(googleTokens));
+
+          get().googleProfile.execute();
         },
       }),
       asyncMethods

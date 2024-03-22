@@ -3,32 +3,36 @@ import { useStore } from "../hooks/useStore/useStore";
 import cn from "classnames";
 
 export function GoogleSignInBar() {
-  useAutofetchProfile();
+  const fetchGoogleProfile = useStore((s) => s.googleProfile.execute);
+  const googleAccessToken = useStore((s) => s.googleTokens?.access_token);
+
+  useEffect(() => {
+    if (!googleAccessToken) {
+      return;
+    }
+
+    fetchGoogleProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [googleAccessToken]);
+
+  if (googleAccessToken) {
+    return <CurrentGoogleProfile />;
+  }
 
   return <SignInButton />;
 }
 
-function useAutofetchProfile() {
-  const shouldFetchProfile = useStore((s) =>
-    s.googleTokenClient.isSuccess() && s.googleSignIn.isSuccess()
-  );
-  const fetchGoogleProfile = useStore((s) => s.googleProfile.execute);
-
-  useEffect(() => {
-    if (shouldFetchProfile) {
-      fetchGoogleProfile();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldFetchProfile]);
-}
-
 function CurrentGoogleProfile() {
-  const profileStatus = useStore((s) => s.googleProfile.status);
   const profileError = useStore((s) => s.googleProfile.error?.message);
+  const profileStatus = useStore((s) => s.googleProfile.status);
 
   const picture = useStore((s) => s.googleProfile.data?.picture);
   const name = useStore((s) => s.googleProfile.data?.name);
   const email = useStore((s) => s.googleProfile.data?.email);
+
+  if (profileStatus === "idle") {
+    return null;
+  }
 
   if (profileStatus === "pending") {
     return <progress className="progress" max="100" />;
@@ -40,10 +44,6 @@ function CurrentGoogleProfile() {
         Failed to fetch profile: {profileError}
       </div>
     );
-  }
-
-  if (profileStatus !== "success") {
-    return null;
   }
 
   return (
@@ -71,14 +71,10 @@ function SignInButton() {
   const googleAuthStatus = useStore((s) => s.googleSignIn.status);
   const handleSignIn = useStore((s) => s.googleSignIn.execute);
 
-  if (googleAuthStatus === "success") {
-    return <CurrentGoogleProfile />;
-  }
-
   return (
     <button
       className={cn("button", "is-primary", {
-        "is-loading": googleAuthStatus === 'pending',
+        "is-loading": googleAuthStatus === "pending",
       })}
       onClick={() => handleSignIn()}
     >

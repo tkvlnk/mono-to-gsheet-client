@@ -33,11 +33,15 @@ export const SheetPicker = googleAuthGuard(() => {
 });
 
 function usePicker() {
-  const accessToken = useStore((s) => s.googleSignIn.get().access_token);
+  const accessToken = useStore((s) => s.googleTokens?.access_token);
   const onSheetSelected = useStore((state) => state.setSheet);
 
-  const [picker] = useState(() =>
-    new window.google.picker.PickerBuilder()
+  const [picker] = useState(() => {
+    if (!accessToken) {
+      throw new Error("No google access token");
+    }
+
+    return new window.google.picker.PickerBuilder()
       .addView(
         new window.google.picker.DocsView(
           window.google.picker.ViewId.SPREADSHEETS
@@ -50,12 +54,11 @@ function usePicker() {
           window.google.picker.Action.PICKED
         ) {
           const { id, name } = data.docs[0];
-          console.log(data);
           onSheetSelected({ id, name });
         }
       })
-      .build()
-  );
+      .build();
+  });
 
   return picker;
 }

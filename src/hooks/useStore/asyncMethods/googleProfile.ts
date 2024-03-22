@@ -1,4 +1,3 @@
-import { authCache } from "../authCache";
 import { StoreCtx } from "../useStore";
 
 export type GoogleUserProfile = {
@@ -13,7 +12,11 @@ export type GoogleUserProfile = {
 };
 
 export async function googleProfile(this: StoreCtx) {
-  const { access_token } = this.getState().googleSignIn.get();
+  const { access_token } = this.getState().googleTokens ?? {};
+
+  if (!access_token) {
+    throw new Error("No google access token");
+  }
 
   const res = await fetch(
     "https://www.googleapis.com/oauth2/v2/userinfo?alt=json",
@@ -25,10 +28,15 @@ export async function googleProfile(this: StoreCtx) {
   );
 
   if (!res.ok) {
-    authCache.clear();
+    this.getState().setGoogleTokens(null);
     this.getState().googleSignIn.reset();
     throw new Error("Profile request failed");
   }
 
-  return res.json() as Promise<GoogleUserProfile>;
+  const result = await res.json().catch((e) => {
+    console.log(e);
+    throw e;
+  });
+
+  return result as Promise<GoogleUserProfile>;
 }
