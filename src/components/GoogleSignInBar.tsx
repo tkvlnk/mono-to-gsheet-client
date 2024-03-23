@@ -49,22 +49,20 @@ function CurrentGoogleProfile() {
   }
 
   return (
-    <div className="media block">
-      <div className="media-left">
-        <figure className="image is-24x24">
-          <img
-            className="is-rounded"
-            src={picture}
-            alt="Google profile picture"
-          />
-        </figure>
-      </div>
-      <div className="media-content">
+    <div className="is-flex is-size-6 is-align-items-center has-text-weight-normal" style={{
+      gap: "0.5rem"
+    }}>
+      <figure className="image is-24x24">
+        <img
+          className="is-rounded"
+          src={picture}
+          alt="Google profile picture"
+        />
+      </figure>
+      <div>
         <b>{name}</b> <span>({email})</span>
       </div>
-      <div className="media-right">
-        <SignOutButton />
-      </div>
+      <SignOutButton />
     </div>
   );
 }
@@ -75,7 +73,7 @@ function SignInButton() {
 
   return (
     <button
-      className={cn("button", "is-primary", {
+      className={cn("button", "is-small", "is-primary", {
         "is-loading": googleAuthStatus === "pending",
       })}
       onClick={() => handleSignIn()}
@@ -91,7 +89,7 @@ function SignOutButton() {
 
   return (
     <button
-      className={cn("button", {
+      className={cn("button", "is-small", {
         "is-loading": isPending,
       })}
       onClick={() => handleSignOut()}
