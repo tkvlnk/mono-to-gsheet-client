@@ -1,8 +1,8 @@
-import { GoogleSignInBar } from "./components/GoogleSignInBar";
-import { SheetPicker } from "./components/SheetPicker";
-import { MonoApiKeyInput } from "./components/MonoApiKeyInput";
-import { MonoAccountSelector } from "./components/MonoAccountSelector";
-import { PeriodPicker } from "./components/PeriodPicker";
+import { GoogleSignInBar } from "./components/MonobankPanel/GoogleSignInBar";
+import { SheetPicker } from "./components/MonobankPanel/SheetPicker";
+import { MonoApiKeyInput } from "./components/GooglePanel/MonoApiKeyInput";
+import { MonoAccountSelector } from "./components/GooglePanel/MonoAccountSelector";
+import { PeriodPicker } from "./components/GooglePanel/PeriodPicker";
 import { Confirmation } from "./components/Confirmation";
 import { useStore } from "./hooks/useStore/useStore";
 import { useEffect, useRef } from "react";
@@ -21,20 +21,17 @@ export default function App() {
           <div className="panel-block">
             <MonoAccountSelector />
           </div>
-          <div className="panel-block">
-            <PeriodPicker />
-          </div>
+          <PeriodPicker />
         </div>
         <div className="panel is-link">
           <div className="panel-heading">
             <div className="is-flex is-justify-content-space-between">
               <div>Google</div>
-              <GoogleSignInBar />
             </div>
           </div>
-          <div className="panel-block">
-            <SheetPicker />
-          </div>
+          <GoogleSignInBar />
+          <SheetPicker />
+
         </div>
         <Confirmation />
       </div>

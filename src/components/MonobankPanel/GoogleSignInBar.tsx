@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStore } from "../hooks/useStore/useStore";
+import { useStore } from "../../hooks/useStore/useStore";
 import cn from "classnames";
 
 export function GoogleSignInBar() {
@@ -7,7 +7,10 @@ export function GoogleSignInBar() {
   const googleAccessToken = useStore((s) => s.googleTokens?.access_token);
 
   useEffect(() => {
-    if (!googleAccessToken || useStore.getState().googleProfile.status === "pending") {
+    if (
+      !googleAccessToken ||
+      useStore.getState().googleProfile.status === "pending"
+    ) {
       return;
     }
 
@@ -15,16 +18,14 @@ export function GoogleSignInBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [googleAccessToken]);
 
-  if (googleAccessToken) {
-    return <CurrentGoogleProfile />;
-  }
-
-  return <SignInButton />;
+  return (
+    <div className="panel-block">
+      {googleAccessToken ? <CurrentGoogleProfile /> : <SignInButton />}
+    </div>
+  );
 }
 
 function CurrentGoogleProfile() {
-  console.log(useStore((s) => s.googleProfile.error));
-
   const profileError = useStore((s) => s.googleProfile.error?.message);
   const profileStatus = useStore((s) => s.googleProfile.status);
 
@@ -49,20 +50,28 @@ function CurrentGoogleProfile() {
   }
 
   return (
-    <div className="is-flex is-size-6 is-align-items-center has-text-weight-normal" style={{
-      gap: "0.5rem"
-    }}>
-      <figure className="image is-24x24">
-        <img
-          className="is-rounded"
-          src={picture}
-          alt="Google profile picture"
-        />
-      </figure>
-      <div>
-        <b>{name}</b> <span>({email})</span>
+    <div className="level is-mobile is-flex-grow-1">
+      <div className="level-left">
+        <div className="level-item">
+          <figure className="mr-2 image is-24x24">
+            <img
+              className="is-rounded"
+              src={picture}
+              alt="Google profile picture"
+            />
+          </figure>
+          <b className="is-hidden is-flex-mobile">{email}</b>
+          <div className="is-hidden-mobile">
+            <b className="mr-1">{name}</b>
+            <span className="control">({email})</span>
+          </div>
+        </div>
       </div>
-      <SignOutButton />
+      <div className="level-right">
+        <div className="level-item">
+          <SignOutButton />
+        </div>
+      </div>
     </div>
   );
 }
@@ -73,18 +82,21 @@ function SignInButton() {
 
   return (
     <button
-      className={cn("button", "is-small", "is-primary", {
+      className={cn("button", "is-link", {
         "is-loading": googleAuthStatus === "pending",
       })}
       onClick={() => handleSignIn()}
     >
-      Sign in via google
+      Увійти через Google
     </button>
   );
 }
 
 function SignOutButton() {
-  const handleSignOut = useStore((s) => s.googleSignOut.execute);
+  const handleSignOut = useStore((s) => () => {
+    s.setSheet(undefined);
+    s.googleSignOut.execute()
+  });
   const isPending = useStore((s) => s.googleSignOut.isPending());
 
   return (
@@ -92,9 +104,9 @@ function SignOutButton() {
       className={cn("button", "is-small", {
         "is-loading": isPending,
       })}
-      onClick={() => handleSignOut()}
+      onClick={handleSignOut}
     >
-      Sign out
+      Вийти
     </button>
   );
 }

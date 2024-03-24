@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStore } from "../hooks/useStore/useStore";
+import { useStore } from "../../hooks/useStore/useStore";
 
 export function MonoApiKeyInput() {
   const apiKey = useStore((s) => s.monoAuthToken);
@@ -29,7 +29,7 @@ export function MonoApiKeyInput() {
           )
         </span>
       </label>
-      <div className={`control  ${isClientInfoLoading ? "is-loading" : ""}`}>
+      <div className={`control${isClientInfoLoading ? "is-loading" : ""}`}>
         <input
           value={apiKey}
           placeholder="Введіть токен доступу до апі монобанка"

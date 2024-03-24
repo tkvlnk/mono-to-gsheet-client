@@ -1,6 +1,7 @@
 import { useStore } from "../hooks/useStore/useStore";
+import { accountToStrLabel } from "../utils/accountToStrLabel";
 import { monthNames } from "../utils/monthNames";
-import { GoogleSheetText } from "./GoogleSheetText";
+import { GoogleSheetText } from "./MonobankPanel/GoogleSheetText";
 
 export function Confirmation() {
   const message = useConfirmationMessage();
@@ -31,17 +32,20 @@ export function Confirmation() {
 function useConfirmationMessage() {
   const monthIndex = useStore(s => s.monthIndex);
   const year = useStore(s => s.year);
-  const accountType = useStore(s => s.account?.type);
+  const account = useStore((s) => s.account);
   const sheet = useStore((s) => s.sheet);
   
-  if (typeof monthIndex === 'undefined' || !year || !accountType || !sheet) {
+  if (typeof monthIndex === "undefined" || !year || !account || !sheet) {
     return;
   }
 
   return (
-    <div className="is-flex">
-      Імпортувати дані по рахунку {accountType} за ${monthNames[monthIndex].ua}{" "}
-      {year} в таблицю <GoogleSheetText sheet={sheet} />
+    <div>
+      Імпортувати дані по рахунку <b>{accountToStrLabel(account)}</b> за{" "}
+      <b>
+        {monthNames[monthIndex].ua} {year}
+      </b>{" "}
+      в таблицю <GoogleSheetText sheet={sheet} />
     </div>
   );
 }
