@@ -4,33 +4,18 @@ export function GoogleSheetText({
   sheet: { id: string; name: string };
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "0.25em",
-      }}
-    >
-      <div>{name}</div>{" "}
-      <div style={{ display: "flex" }}>
-        (<GoogleSheetId id={id} />)
-      </div>
-    </div>
+    <span>
+      {name} (<GoogleSheetId id={id} />)
+    </span>
   );
 }
 
 function GoogleSheetId({ id }: { id: string }) {
   return (
-    <div
-      style={{
-        maxWidth: "5em",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-        overflowWrap: "unset"
-      }}
+    <span
       title={id}
     >
-      id: {id}
-    </div>
+      id: {id.substring(0, 5)}…
+    </span>
   );
 }

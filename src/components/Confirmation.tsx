@@ -13,18 +13,19 @@ export function Confirmation() {
     return;
   }
 
-  if (isPending) {
-    return (
-      <div className="box">
-        <progress className="progress" max="100" />
-      </div>
-    );
-  }
-
   return (
-    <div className="box">
-      <div className="block">{message}</div>
-      <button className='block button is-primary' onClick={confirm}>Підтвердити</button>
+    <div className="card">
+      <div className="card-content">{message}</div>
+      <footer className="card-footer">
+        <button
+          className={`card-footer-item is-big button is-primary ${
+            isPending ? "is-loading" : ""
+          }`}
+          onClick={confirm}
+        >
+          Підтвердити
+        </button>
+      </footer>
     </div>
   );
 }
@@ -39,13 +40,51 @@ function useConfirmationMessage() {
     return;
   }
 
+  // return (
+  //   <div className="columns">
+  //     <div className="column is-two-fifths">
+  //       <div>Імпортувати дані по рахунку</div>
+  //       <div className="title">{accountToStrLabel(account)}</div>
+  //       <div className="title">
+  //         {monthNames[monthIndex].ua} {year}
+  //       </div>
+  //     </div>
+  //     <div className="column"></div>
+  //     <div className="column is-two-fifths">
+  //       <div>В таблицю</div>
+  //       <div className="title">
+  //         <GoogleSheetText sheet={sheet} />
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div>
-      Імпортувати дані по рахунку <b>{accountToStrLabel(account)}</b> за{" "}
-      <b>
-        {monthNames[monthIndex].ua} {year}
-      </b>{" "}
-      в таблицю <GoogleSheetText sheet={sheet} />
+    <div className="level">
+      <div className="level-item has-text-centered">
+        <div>
+          <div>Імпортувати дані по рахунку</div>
+          <div className="has-text-weight-bold">
+            <div>{accountToStrLabel(account)}</div>
+            <div>
+              {monthNames[monthIndex].ua} {year}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="level-item">
+        <div className="is-size-2">➡️</div>
+      </div>
+
+      <div className="level-item has-text-centered">
+        <div>
+          <div>В таблицю</div>
+          <div  className="has-text-weight-bold">
+            <GoogleSheetText sheet={sheet} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
