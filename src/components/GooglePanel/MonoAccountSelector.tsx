@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Account } from "../../hooks/useStore/asyncMethods/monoClientInfo";
 import { useStore } from "../../hooks/useStore/useStore";
-import { currencyNumberToCode } from "../../utils/currencyNumberToCode";
 import { accountToStrLabel } from "../../utils/accountToStrLabel";
 
 export function MonoAccountSelector() {
