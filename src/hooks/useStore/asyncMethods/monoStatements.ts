@@ -22,9 +22,7 @@ export type Statement = {
 };
 
 export async function monoStatements(this: StoreCtx) {
-  const { monthIndex, year, account } = this.getState();
-
-  const accountId = account?.id;
+  const { monthIndex, year, monoAccountId: accountId } = this.getState();
 
   if (!accountId) {
     throw new Error("accountId is not set");

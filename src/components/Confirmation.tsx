@@ -2,13 +2,10 @@ import { useStore } from "../hooks/useStore/useStore";
 import { accountToStrLabel } from "../utils/accountToStrLabel";
 import { monthNames } from "../utils/monthNames";
 import { GoogleSheetText } from "./GooglePanel/GoogleSheetText";
-import cns from 'classnames';
+import cns from "classnames";
 
 export function Confirmation() {
   const message = useConfirmationMessage();
-
-  const isPending = useStore(s => s.writeMonoStatementsToGoogleSheet.isPending());
-  const confirm = useStore(s => s.writeMonoStatementsToGoogleSheet.execute);
 
   if (!message) {
     return;
@@ -18,26 +15,18 @@ export function Confirmation() {
     <div className="panel">
       <div className="panel-block">{message}</div>
       <div className="panel-block">
-        <button
-          className={cns("is-large", "button", "is-primary" , "is-flex-grow-1", {
-            ["is-loading"]: isPending,
-          })}
-          onClick={confirm}
-          disabled={isPending}
-        >
-          Підтвердити
-        </button>
+        <ConfirmBtn />
       </div>
     </div>
   );
 }
 
 function useConfirmationMessage() {
-  const monthIndex = useStore(s => s.monthIndex);
-  const year = useStore(s => s.year);
+  const monthIndex = useStore((s) => s.monthIndex);
+  const year = useStore((s) => s.year);
   const monoAccountId = useStore((s) => s.monoAccountId);
   const sheet = useStore((s) => s.sheet);
-  
+
   if (typeof monthIndex === "undefined" || !year || !monoAccountId || !sheet) {
     return null;
   }
@@ -73,4 +62,47 @@ function AccountLabel() {
   const account = useStore((s) => s.getMonoAccount());
 
   return <div>{accountToStrLabel(account)}</div>;
+}
+
+function ConfirmBtn() {
+  const confirm = useStore(
+    (s) => s.writeMonoStatementsToGoogleSheet.executeAsync
+  );
+  const confirmationStatus = useStore(
+    (s) => s.writeMonoStatementsToGoogleSheet.status
+  );
+  const resetConfirmation = useStore(
+    (s) => s.writeMonoStatementsToGoogleSheet.reset
+  );
+
+  const isPending = confirmationStatus === "pending";
+
+  const handleClick = async () => {
+    try {
+      await confirm();
+    } finally {
+      setTimeout(resetConfirmation, 3000);
+    }
+  };
+
+  return (
+    <button
+      className={cns("is-large", "button", "is-primary", "is-flex-grow-1", {
+        ["is-loading"]: isPending,
+        ["is-success"]: confirmationStatus === "success",
+        ["is-danger"]: confirmationStatus === "error",
+      })}
+      onClick={handleClick}
+      disabled={isPending}
+    >
+      {
+        {
+          idle: "Підтвердити",
+          pending: "Підтвердження...",
+          success: "Успішно",
+          error: "Помилка",
+        }[confirmationStatus]
+      }
+    </button>
+  );
 }
