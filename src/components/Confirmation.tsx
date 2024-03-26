@@ -2,6 +2,7 @@ import { useStore } from "../hooks/useStore/useStore";
 import { accountToStrLabel } from "../utils/accountToStrLabel";
 import { monthNames } from "../utils/monthNames";
 import { GoogleSheetText } from "./MonobankPanel/GoogleSheetText";
+import cns from 'classnames';
 
 export function Confirmation() {
   const message = useConfirmationMessage();
@@ -14,18 +15,19 @@ export function Confirmation() {
   }
 
   return (
-    <div className="card">
-      <div className="card-content">{message}</div>
-      <footer className="card-footer">
+    <div className="panel">
+      <div className="panel-block">{message}</div>
+      <div className="panel-block">
         <button
-          className={`card-footer-item is-big button is-primary ${
-            isPending ? "is-loading" : ""
-          }`}
+          className={cns("is-large", "button", "is-primary" , "is-flex-grow-1", {
+            ["is-loading"]: isPending,
+          })}
           onClick={confirm}
+          disabled={isPending}
         >
           Підтвердити
         </button>
-      </footer>
+      </div>
     </div>
   );
 }
@@ -37,33 +39,30 @@ function useConfirmationMessage() {
   const sheet = useStore((s) => s.sheet);
   
   if (typeof monthIndex === "undefined" || !year || !account || !sheet) {
-    return;
+    return null;
   }
 
   return (
-    <div className="level">
-      <div className="level-item has-text-centered">
-        <div>
-          <div>Імпортувати дані по рахунку</div>
-          <div className="has-text-weight-bold">
-            <div>{accountToStrLabel(account)}</div>
-            <div>
-              {monthNames[monthIndex].ua} {year}
-            </div>
+    <div className="columns is-flex-grow-1">
+      <div className="column is-two-fifths has-text-centered">
+        <div>Імпортувати дані по рахунку</div>
+        <div className="has-text-weight-bold">
+          <div>{accountToStrLabel(account)}</div>
+          <div>
+            {monthNames[monthIndex].ua} {year}
           </div>
         </div>
       </div>
 
-      <div className="level-item">
-        <div className="is-size-2">➡️</div>
+      <div className="column has-text-centered">
+        <div className="is-size-2 is-hidden-mobile">➡️</div>
+        <div className="is-size-2 is-hidden is-inline-block-mobile">⬇️</div>
       </div>
 
-      <div className="level-item has-text-centered">
-        <div>
-          <div>В таблицю</div>
-          <div  className="has-text-weight-bold">
-            <GoogleSheetText sheet={sheet} />
-          </div>
+      <div className="column is-two-fifths has-text-centered">
+        <div>В таблицю</div>
+        <div className="has-text-weight-bold">
+          <GoogleSheetText sheet={sheet} />
         </div>
       </div>
     </div>
