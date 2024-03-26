@@ -9,7 +9,9 @@ export const SheetPicker = googleAuthGuard(() => {
 
   const pickerBtn = (
     <button
-      className={cns("button", "is-link")}
+      className={cns("button", {
+        ["is-link"]: !sheet,
+      })}
       onClick={() => picker.setVisible(true)}
     >
       {sheet ? "Змінити" : "Обрати"} таблицю
@@ -24,11 +26,8 @@ export const SheetPicker = googleAuthGuard(() => {
         <div className="field field-body has-addons">
           {sheet && (
             <>
-              <div className="control">
-                <button className="button is-static">{sheet.name}</button>
-              </div>
               <div className="control is-expanded">
-                <input className="input" type="text" value={`${sheet.id}`} readOnly />
+                <input className="input" type="text" value={`${sheet.name} (${sheet.id})`} readOnly />
               </div>
             </>
           )}
