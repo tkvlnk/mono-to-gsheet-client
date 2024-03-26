@@ -35,10 +35,10 @@ export function Confirmation() {
 function useConfirmationMessage() {
   const monthIndex = useStore(s => s.monthIndex);
   const year = useStore(s => s.year);
-  const account = useStore((s) => s.account);
+  const monoAccountId = useStore((s) => s.monoAccountId);
   const sheet = useStore((s) => s.sheet);
   
-  if (typeof monthIndex === "undefined" || !year || !account || !sheet) {
+  if (typeof monthIndex === "undefined" || !year || !monoAccountId || !sheet) {
     return null;
   }
 
@@ -47,7 +47,7 @@ function useConfirmationMessage() {
       <div className="column is-two-fifths has-text-centered">
         <div>Імпортувати дані по рахунку</div>
         <div className="has-text-weight-bold">
-          <div>{accountToStrLabel(account)}</div>
+          <AccountLabel />
           <div>
             {monthNames[monthIndex].ua} {year}
           </div>
@@ -67,4 +67,10 @@ function useConfirmationMessage() {
       </div>
     </div>
   );
+}
+
+function AccountLabel() {
+  const account = useStore((s) => s.getMonoAccount());
+
+  return <div>{accountToStrLabel(account)}</div>;
 }

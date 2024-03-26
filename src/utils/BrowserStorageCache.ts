@@ -1,6 +1,6 @@
-
-export class LocalStorageCache<Data> {
+export class BrowserStorageCache<Data> {
   constructor(
+    private storage: Storage,
     private storageKey: string,
     private cacheLifespan = 1000 * 60 * 60 * 24,
   ) {}
@@ -13,7 +13,7 @@ export class LocalStorageCache<Data> {
   }
 
   get() {
-    const cache = localStorage.getItem(this.storageKey);
+    const cache = this.storage.getItem(this.storageKey);
 
     if (!cache) {
       return null;
@@ -29,13 +29,16 @@ export class LocalStorageCache<Data> {
   }
 
   set(data: Data) {
-    localStorage.setItem(this.storageKey, JSON.stringify({
-      timestamp: Date.now(),
-      ...data
-    }));
+    this.storage.setItem(
+      this.storageKey,
+      JSON.stringify({
+        timestamp: Date.now(),
+        ...data,
+      })
+    );
   }
 
   clear() {
-    localStorage.removeItem(this.storageKey);
+    this.storage.removeItem(this.storageKey);
   }
 }

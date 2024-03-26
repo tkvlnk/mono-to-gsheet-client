@@ -27,24 +27,20 @@ export function MonoAccountSelector() {
 
 function AccountSelect() {
   const clientInfo = useStore((s) => s.monoClientInfo);
-  const account = useStore((s) => s.account);
-  const setAccount = useStore((s) => s.setAccount);
+  const monoAccountId = useStore((s) => s.monoAccountId);
+  const setAccount = useStore((s) => s.setAccountMonoAccountId);
 
   return (
     <div className="select is-link">
       <select
-        value={account?.id}
+        value={monoAccountId}
         onChange={(event) => {
           const accountId = event.target.value;
-          const selectedAccount = clientInfo.data?.accounts.find(
-            (acc) => acc.id === accountId
-          );
-          if (selectedAccount) {
-            setAccount(selectedAccount);
-          }
+
+          setAccount(accountId);
         }}
       >
-        {!account?.id && <option>Рахунок не обрано</option>}
+        {!monoAccountId && <option>Рахунок не обрано</option>}
         {clientInfo.data?.accounts
           .filter((acc) => acc.maskedPan.length)
           .map((acc) => (

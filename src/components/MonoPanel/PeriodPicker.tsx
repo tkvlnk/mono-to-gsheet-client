@@ -7,7 +7,7 @@ const currentYear = new Date().getFullYear();
 const currentMonth = new Date().getMonth();
 
 export function PeriodPicker() {
-  const isAccountSelected = useStore((state) => !!state.account);
+  const isAccountSelected = useStore((state) => !!state.monoAccountId);
 
   if (!isAccountSelected) {
     return null;

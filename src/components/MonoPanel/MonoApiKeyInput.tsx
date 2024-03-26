@@ -44,7 +44,7 @@ export function MonoApiKeyInput() {
               })}
             >
               <input
-                value={apiKey}
+                value={apiKey ?? ''}
                 placeholder="Введіть токен доступу до апі монобанка"
                 type="text"
                 className={`input`}

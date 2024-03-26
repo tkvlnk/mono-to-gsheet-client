@@ -28,8 +28,9 @@ export type Store = StateWithAsyncSlices<
       name: string;
     };
     setSheet(sheet: Store["sheet"]): void;
-    account?: Account;
-    setAccount(account: Account): void;
+    monoAccountId?: string;
+    setAccountMonoAccountId(accountId: string): void;
+    getMonoAccount(): Account;
     monoAuthToken?: string;
     getMonoAuthToken(): string;
     setMonoAuthToken(monoAuthToken: string): void;

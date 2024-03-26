@@ -1,4 +1,4 @@
-import { LocalStorageCache } from "../../../utils/LocalStorageCache";
+import { BrowserStorageCache } from "../../../utils/BrowserStorageCache";
 import { StoreCtx } from "../useStore";
 
 export type Account = {
@@ -32,7 +32,7 @@ export type ClientInfo = {
   jars: Jar[];
 };
 
-const clientInfoCache = new LocalStorageCache<{ clientInfo: ClientInfo; apiKey: string }>('client-info-cache');
+const clientInfoCache = new BrowserStorageCache<{ clientInfo: ClientInfo; apiKey: string }>(sessionStorage, 'client-info-cache');
 
 export function monoClientInfo(
   this: StoreCtx
