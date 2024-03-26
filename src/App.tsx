@@ -14,8 +14,10 @@ export default function App() {
   return (
     <div className="section">
       <div className="container is-max-desktop">
-        <h1 className="title is-1">Monobank Google Sheets</h1>
-        <h2 className="subtitle is-4">Імпортуйте дані з монобанка в гугл-таблицю</h2>
+        <h1 className="title is-1">Monobank 👉 Google Sheets</h1>
+        <h2 className="subtitle is-4">
+          Імпортуйте дані з монобанка в гугл-таблицю
+        </h2>
 
         <Disclaimer />
 

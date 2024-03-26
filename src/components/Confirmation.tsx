@@ -44,8 +44,8 @@ function useConfirmationMessage() {
       </div>
 
       <div className="column has-text-centered">
-        <div className="is-size-2 is-hidden-mobile">➡️</div>
-        <div className="is-size-2 is-hidden is-inline-block-mobile">⬇️</div>
+        <div className="is-size-2 is-hidden-mobile">👉</div>
+        <div className="is-size-2 is-hidden is-inline-block-mobile">👇</div>
       </div>
 
       <div className="column is-two-fifths has-text-centered">
