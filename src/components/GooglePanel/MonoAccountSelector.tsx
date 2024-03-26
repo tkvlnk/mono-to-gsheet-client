@@ -5,8 +5,6 @@ import { accountToStrLabel } from "../../utils/accountToStrLabel";
 
 export function MonoAccountSelector() {
   const clientInfo = useStore((s) => s.monoClientInfo);
-  const account = useStore((s) => s.account);
-  const setAccount = useStore((s) => s.setAccount);
   const hasMonoAuthToken = useStore((s) => !!s.monoAuthToken);
 
   if (!hasMonoAuthToken || clientInfo.status !== "success") {
@@ -14,33 +12,45 @@ export function MonoAccountSelector() {
   }
 
   return (
-    <div className="field">
-      <label className="label">
-        <span>Оберіть рахунок монобанку ({clientInfo.data?.name})</span>
-      </label>
-      <div className="control">
-        <div className="select is-link">
-          <select
-            value={account?.id}
-            onChange={(event) => {
-              const accountId = event.target.value;
-              const selectedAccount = clientInfo.data?.accounts.find(
-                (acc) => acc.id === accountId
-              );
-              if (selectedAccount) {
-                setAccount(selectedAccount);
-              }
-            }}
-          >
-            {!account?.id && <option>Рахунок не обрано</option>}
-            {clientInfo.data?.accounts
-              .filter((acc) => acc.maskedPan.length)
-              .map((acc) => (
-                <AccountOption key={acc.id} account={acc} />
-              ))}
-          </select>
+    <div className="panel-block">
+      <div className="field">
+        <label className="label">
+          <span>Оберіть рахунок монобанку</span>
+        </label>
+        <div className="control">
+          <AccountSelect />
         </div>
       </div>
+    </div>
+  );
+}
+
+function AccountSelect() {
+  const clientInfo = useStore((s) => s.monoClientInfo);
+  const account = useStore((s) => s.account);
+  const setAccount = useStore((s) => s.setAccount);
+
+  return (
+    <div className="select is-link">
+      <select
+        value={account?.id}
+        onChange={(event) => {
+          const accountId = event.target.value;
+          const selectedAccount = clientInfo.data?.accounts.find(
+            (acc) => acc.id === accountId
+          );
+          if (selectedAccount) {
+            setAccount(selectedAccount);
+          }
+        }}
+      >
+        {!account?.id && <option>Рахунок не обрано</option>}
+        {clientInfo.data?.accounts
+          .filter((acc) => acc.maskedPan.length)
+          .map((acc) => (
+            <AccountOption key={acc.id} account={acc} />
+          ))}
+      </select>
     </div>
   );
 }

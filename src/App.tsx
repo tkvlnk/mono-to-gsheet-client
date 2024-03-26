@@ -13,25 +13,22 @@ export default function App() {
   return (
     <div className="section">
       <div className="container is-max-desktop">
-        <div className="panel is-link">
-          <div className="panel-heading">Monobank</div>
+        <div className="panel">
+          <div className="panel-block">
+            <h2 className="title">Monobank</h2>
+          </div>
           <div className="panel-block">
             <MonoApiKeyInput />
           </div>
-          <div className="panel-block">
-            <MonoAccountSelector />
-          </div>
+          <MonoAccountSelector />
           <PeriodPicker />
         </div>
-        <div className="panel is-link">
-          <div className="panel-heading">
-            <div className="is-flex is-justify-content-space-between">
-              <div>Google</div>
-            </div>
+        <div className="panel">
+          <div className="panel-block">
+            <h2 className="title">Google</h2>
           </div>
           <GoogleSignInBar />
           <SheetPicker />
-
         </div>
         <Confirmation />
       </div>

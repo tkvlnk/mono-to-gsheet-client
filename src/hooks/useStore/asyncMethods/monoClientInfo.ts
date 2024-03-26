@@ -48,9 +48,7 @@ async function getClientInfo({ monoAuthToken }: { monoAuthToken: string }) {
   }
 
   const response = await fetch(
-    `https://no-cors.t-a-kvlnk.workers.dev/?uri=${encodeURIComponent(
-      `https://api.monobank.ua/personal/client-info`
-    )}`,
+    `https://api.monobank.ua/personal/client-info`,
     {
       headers: {
         "X-Token": monoAuthToken,

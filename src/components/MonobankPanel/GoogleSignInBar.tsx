@@ -52,19 +52,20 @@ function CurrentGoogleProfile() {
   return (
     <div className="level is-mobile is-flex-grow-1">
       <div className="level-left">
-        <div className="level-item">
-          <figure className="mr-2 image is-24x24">
+        <div className="level-item is-gap-2">
+          <figure className="image is-24x24">
             <img
               className="is-rounded"
               src={picture}
               alt="Google profile picture"
             />
           </figure>
-          <b className="is-hidden is-flex-mobile">{email}</b>
-          <div className="is-hidden-mobile">
-            <b className="mr-1">{name}</b>
+          <div className="is-hidden-mobile is-flex is-gap-1">
+            <div className="has-text-weight-bold">{name}</div>
             <span className="control">({email})</span>
           </div>
+
+          <div className="is-hidden is-flex-mobile ">{email}</div>
         </div>
       </div>
       <div className="level-right">
