@@ -40,25 +40,6 @@ function useConfirmationMessage() {
     return;
   }
 
-  // return (
-  //   <div className="columns">
-  //     <div className="column is-two-fifths">
-  //       <div>Імпортувати дані по рахунку</div>
-  //       <div className="title">{accountToStrLabel(account)}</div>
-  //       <div className="title">
-  //         {monthNames[monthIndex].ua} {year}
-  //       </div>
-  //     </div>
-  //     <div className="column"></div>
-  //     <div className="column is-two-fifths">
-  //       <div>В таблицю</div>
-  //       <div className="title">
-  //         <GoogleSheetText sheet={sheet} />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="level">
       <div className="level-item has-text-centered">
