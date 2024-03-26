@@ -33,7 +33,7 @@ export function MonoApiKeyInput() {
             >
               тут
             </a>
-            )
+            ):
           </span>
         </label>
         <div className="field-body">

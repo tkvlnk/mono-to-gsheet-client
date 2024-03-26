@@ -38,7 +38,7 @@ function YearSelect() {
   return (
     <div className="field">
       <label className="label">
-        <span>Рік</span>
+        <span>Рік:</span>
       </label>
       <div className="control">
         <div className="select">
@@ -83,7 +83,7 @@ function MonthSelect() {
   return (
     <div className="field">
       <label className="label">
-        <span>Місяць</span>
+        <span>Місяць:</span>
       </label>
       <div className="control">
         <div className="select">

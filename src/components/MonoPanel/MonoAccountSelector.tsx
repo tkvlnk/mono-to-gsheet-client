@@ -15,7 +15,7 @@ export function MonoAccountSelector() {
     <div className="panel-block">
       <div className="field">
         <label className="label">
-          <span>Оберіть рахунок монобанку</span>
+          <span>Оберіть рахунок монобанку:</span>
         </label>
         <div className="control">
           <AccountSelect />
