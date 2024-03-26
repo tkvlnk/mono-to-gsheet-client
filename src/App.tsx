@@ -7,38 +7,42 @@ import { Confirmation } from "./components/Confirmation";
 import { useStore } from "./hooks/useStore/useStore";
 import { useEffect, useRef } from "react";
 import { Disclaimer } from "./components/Disclaimer";
+import { Footer } from "./components/Footer";
 
 export default function App() {
   useInitGoogleTokenClient();
 
   return (
-    <div className="section">
-      <div className="container is-max-desktop">
-        <h1 className="title is-1">Monobank 👉 Google Sheets</h1>
-        <h2 className="subtitle is-4">
-          Імпортуйте дані з монобанка в гугл-таблицю
-        </h2>
+    <>
+      <div className="section">
+        <div className="container is-max-desktop">
+          <h1 className="title is-1">Monobank 👉 Google Sheets</h1>
+          <h2 className="subtitle is-4">
+            Імпортуйте дані з монобанка в гугл-таблицю
+          </h2>
 
-        <Disclaimer />
+          <Disclaimer />
 
-        <div className="panel">
-          <div className="panel-block">
-            <h3 className="title is-3">Monobank</h3>
+          <div className="panel">
+            <div className="panel-block">
+              <h3 className="title is-3">Monobank</h3>
+            </div>
+            <MonoApiKeyInput />
+            <MonoAccountSelector />
+            <PeriodPicker />
           </div>
-          <MonoApiKeyInput />
-          <MonoAccountSelector />
-          <PeriodPicker />
-        </div>
-        <div className="panel">
-          <div className="panel-block">
-            <h3 className="title is-3">Google</h3>
+          <div className="panel">
+            <div className="panel-block">
+              <h3 className="title is-3">Google</h3>
+            </div>
+            <GoogleSignInBar />
+            <SheetPicker />
           </div>
-          <GoogleSignInBar />
-          <SheetPicker />
+          <Confirmation />
         </div>
-        <Confirmation />
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 
