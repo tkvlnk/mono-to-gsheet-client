@@ -1,8 +1,8 @@
-import { GoogleSignInBar } from "./components/MonobankPanel/GoogleSignInBar";
-import { SheetPicker } from "./components/MonobankPanel/SheetPicker";
-import { MonoApiKeyInput } from "./components/GooglePanel/MonoApiKeyInput";
-import { MonoAccountSelector } from "./components/GooglePanel/MonoAccountSelector";
-import { PeriodPicker } from "./components/GooglePanel/PeriodPicker";
+import { GoogleSignInBar } from "./components/GooglePanel/GoogleSignInBar";
+import { SheetPicker } from "./components/GooglePanel/SheetPicker";
+import { MonoApiKeyInput } from "./components/MonoPanel/MonoApiKeyInput";
+import { MonoAccountSelector } from "./components/MonoPanel/MonoAccountSelector";
+import { PeriodPicker } from "./components/MonoPanel/PeriodPicker";
 import { Confirmation } from "./components/Confirmation";
 import { useStore } from "./hooks/useStore/useStore";
 import { useEffect, useRef } from "react";

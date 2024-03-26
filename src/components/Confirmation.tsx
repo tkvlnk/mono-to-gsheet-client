@@ -1,7 +1,7 @@
 import { useStore } from "../hooks/useStore/useStore";
 import { accountToStrLabel } from "../utils/accountToStrLabel";
 import { monthNames } from "../utils/monthNames";
-import { GoogleSheetText } from "./MonobankPanel/GoogleSheetText";
+import { GoogleSheetText } from "./GooglePanel/GoogleSheetText";
 import cns from 'classnames';
 
 export function Confirmation() {
