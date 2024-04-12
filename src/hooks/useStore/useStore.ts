@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { AsyncSliceCtx, asyncSlices } from "zustand-async-slices";
 import { devtools } from "zustand/middleware";
 import { Store, asyncMethods } from "./types";
+import { BrowserStorageCache } from "../../utils/BrowserStorageCache";
 
 export type { Store };
 
@@ -9,7 +10,9 @@ export type StoreCtx = AsyncSliceCtx<Store>;
 
 const MONO_API_KEY = "mono-api-key";
 const GOOGLE_TOKENS = "google-tokens";
-const SELECTED_MONO_ACCOUNT = "selected-mono-account";
+const SELECTED_MONO_ACCOUNT = "selected-mono-accounts";
+
+const monoAccountsCache = new BrowserStorageCache<string[]>(localStorage, SELECTED_MONO_ACCOUNT)
 
 export const useStore = create<Store>()(
   devtools(
@@ -27,13 +30,21 @@ export const useStore = create<Store>()(
           set({
             sheet,
           }),
-        monoAccountId: localStorage.getItem(SELECTED_MONO_ACCOUNT) ?? undefined,
-        setAccountMonoAccountId: (monoAccountId) => {
-          set({ monoAccountId });
-          localStorage.setItem(SELECTED_MONO_ACCOUNT, monoAccountId);
+        monoAccountIds: Array.from(monoAccountsCache.get() ?? []),
+        addMonoAccountId: (monoAccountId) => {
+          set(({ monoAccountIds }) => ({
+            monoAccountIds: [...monoAccountIds, monoAccountId],
+          }));
+          monoAccountsCache.set(get().monoAccountIds);
         },
-        getMonoAccount: () => {
-          const { monoClientInfo, monoAccountId } = get();
+        removeMonoAccountId: (monoAccountId) => {
+          set(({ monoAccountIds }) => ({
+            monoAccountIds: monoAccountIds.filter((id) => id !== monoAccountId),
+          }));
+          monoAccountsCache.set(get().monoAccountIds);
+        },
+        getMonoAccount: (monoAccountId) => {
+          const { monoClientInfo } = get();
 
           if (!monoAccountId) {
             throw new Error("monoAccountId is not defined");
@@ -56,10 +67,10 @@ export const useStore = create<Store>()(
         monoAuthToken: localStorage.getItem(MONO_API_KEY) ?? undefined,
         setMonoAuthToken: (monoAuthToken) => {
           set({
-            monoAccountId: undefined,
+            monoAccountIds: [],
             monoAuthToken,
           });
-          localStorage.removeItem(SELECTED_MONO_ACCOUNT);
+          monoAccountsCache.clear();
 
           if (monoAuthToken) {
             localStorage.setItem(MONO_API_KEY, monoAuthToken);
@@ -86,6 +97,7 @@ export const useStore = create<Store>()(
           localStorage.setItem(GOOGLE_TOKENS, JSON.stringify(googleTokens));
           get().googleProfile.execute();
         },
+        importingProgress: 0,
       }),
       asyncMethods
     )

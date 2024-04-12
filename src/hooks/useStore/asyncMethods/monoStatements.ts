@@ -21,8 +21,8 @@ export type Statement = {
   counterName: string;
 };
 
-export async function monoStatements(this: StoreCtx) {
-  const { monthIndex, year, monoAccountId: accountId } = this.getState();
+export async function monoStatements(this: StoreCtx, accountId: string) {
+  const { monthIndex, year} = this.getState();
 
   if (!accountId) {
     throw new Error("accountId is not set");

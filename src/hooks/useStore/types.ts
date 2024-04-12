@@ -28,14 +28,16 @@ export type Store = StateWithAsyncSlices<
       name: string;
     };
     setSheet(sheet: Store["sheet"]): void;
-    monoAccountId?: string;
-    setAccountMonoAccountId(accountId: string): void;
-    getMonoAccount(): Account;
+    monoAccountIds: string[];
+    addMonoAccountId: (monoAccountId: string) => void;
+    removeMonoAccountId: (monoAccountId: string) => void;
+    getMonoAccount(monoAccountId: string): Account;
     monoAuthToken?: string;
     getMonoAuthToken(): string;
     setMonoAuthToken(monoAuthToken: string): void;
     googleTokens: GoogleApiOAuth2TokenObject | null;
     setGoogleTokens(googleTokens: GoogleApiOAuth2TokenObject | null): void;
+    importingProgress: number;
   },
   typeof asyncMethods
 >;

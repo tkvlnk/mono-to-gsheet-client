@@ -1,9 +1,10 @@
 import { monthNames } from "../../../utils/monthNames";
 import { statementsToColumns } from "../../../utils/statementsToColumns";
 import { StoreCtx } from "../useStore";
+import { Statement } from "./monoStatements";
 
 export async function writeMonoStatementsToGoogleSheet(this: StoreCtx) {
-  const { sheet, monthIndex } = this.getState();
+  const { sheet, monthIndex, monoAccountIds } = this.getState();
 
   if (!sheet?.id) {
     throw new Error("sheet.id is not defined");
@@ -13,15 +14,46 @@ export async function writeMonoStatementsToGoogleSheet(this: StoreCtx) {
     throw new Error("monthIndex is not defined");
   }
 
-  await this.getState().monoStatements.executeAsync();
+  if (!monoAccountIds.length) {
+    throw new Error("monoAccountIds is empty");
+  }
+
+  this.setState({
+    importingProgress: 0,
+  })
+
+  const maxOperations = monoAccountIds.length + 1;
+  const allStatements: Statement[] = []
+
+  for (let i = 0; i < monoAccountIds.length; i++) {
+    if (i !== 0) {
+      await waitAMinute();
+    }
+
+    await this.getState().monoStatements.executeAsync(monoAccountIds[i])
+
+    allStatements.push(...this.getState().monoStatements.get());
+
+    this.setState({
+      importingProgress: (i + 1) / maxOperations,
+    });
+  }
 
   await writeStatementsToSheet({
-    values: statementsToColumns(this.getState().monoStatements.get()),
+    values: statementsToColumns(allStatements),
     spreadsheetId: sheet.id,
     tabName: monthNames[monthIndex].code,
   });
 
+  this.setState({
+    importingProgress: maxOperations,
+  });
+
   this.getState().monoStatements.reset();
+}
+
+function waitAMinute() {
+  return new Promise((resolve) => setTimeout(resolve, 60_000));
 }
 
 async function writeStatementsToSheet({

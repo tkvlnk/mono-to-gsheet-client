@@ -17,44 +17,50 @@ export function MonoAccountSelector() {
         <label className="label">
           <span>Оберіть рахунок монобанку:</span>
         </label>
-        <div className="control">
-          <AccountSelect />
+        <div>
+          <AccountCheckboxes />
         </div>
       </div>
     </div>
   );
 }
 
-function AccountSelect() {
+function AccountCheckboxes() {
   const clientInfo = useStore((s) => s.monoClientInfo);
-  const monoAccountId = useStore((s) => s.monoAccountId);
-  const setAccount = useStore((s) => s.setAccountMonoAccountId);
+  const monoAccountIds = useStore((s) => s.monoAccountIds);
+  const addId = useStore((s) => s.addMonoAccountId);
+  const removeId = useStore((s) => s.removeMonoAccountId);
 
   return (
-    <div className="select is-link">
-      <select
-        value={monoAccountId}
-        onChange={(event) => {
-          const accountId = event.target.value;
-
-          setAccount(accountId);
-        }}
-      >
-        {!monoAccountId && <option>Рахунок не обрано</option>}
-        {clientInfo.data?.accounts
-          .filter((acc) => acc.maskedPan.length)
-          .map((acc) => (
-            <AccountOption key={acc.id} account={acc} />
-          ))}
-      </select>
+    <div>
+      {clientInfo.data?.accounts
+        .filter((acc) => acc.maskedPan.length)
+        .map((acc) => (
+          <div key={acc.id} className="block">
+            <label className="checkbox">
+              <input
+                type="checkbox"
+                checked={monoAccountIds.includes(acc.id)}
+                onChange={({ target: { checked } }) => {
+                  if (checked) {
+                    addId(acc.id);
+                  } else {
+                    removeId(acc.id);
+                  }
+                }}
+              />
+              <AccountOption account={acc} />
+            </label>
+          </div>
+        ))}
     </div>
   );
 }
 
 function AccountOption({ account }: { account: Account }) {
   return (
-    <option value={account.id}>
+    <span>
       {useMemo(() => accountToStrLabel(account), [account])}
-    </option>
+    </span>
   );
 }

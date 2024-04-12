@@ -14,6 +14,7 @@ export function Confirmation() {
   return (
     <div className="panel">
       <div className="panel-block">{message}</div>
+      <ProgressBar />
       <div className="panel-block">
         <ConfirmBtn />
       </div>
@@ -24,10 +25,10 @@ export function Confirmation() {
 function useConfirmationMessage() {
   const monthIndex = useStore((s) => s.monthIndex);
   const year = useStore((s) => s.year);
-  const monoAccountId = useStore((s) => s.monoAccountId);
+  const monoAccountId = useStore((s) => s.monoAccountIds);
   const sheet = useStore((s) => s.sheet);
 
-  if (typeof monthIndex === "undefined" || !year || !monoAccountId || !sheet) {
+  if (typeof monthIndex === "undefined" || !year || !monoAccountId.length || !sheet) {
     return null;
   }
 
@@ -59,9 +60,17 @@ function useConfirmationMessage() {
 }
 
 function AccountLabel() {
-  const account = useStore((s) => s.getMonoAccount());
+  const accounts = useStore((s) =>
+    s.monoAccountIds.map((id) => accountToStrLabel(s.getMonoAccount(id)))
+  );
 
-  return <div>{accountToStrLabel(account)}</div>;
+  return (
+    <div>
+      {accounts.map((accLabel) => (
+        <div key={accLabel}>{accLabel}</div>
+      ))}
+    </div>
+  );
 }
 
 function ConfirmBtn() {
@@ -104,5 +113,23 @@ function ConfirmBtn() {
         }[confirmationStatus]
       }
     </button>
+  );
+}
+
+function ProgressBar() {
+  const progress = useStore((s) => s.importingProgress);
+
+  if (useStore(s => s.writeMonoStatementsToGoogleSheet.status) !== "pending") {
+    return null;
+  }
+
+  const progressStr = (progress * 100).toFixed(0);
+
+  return (
+    <div className="panel-block">
+      <progress className="progress" value={progressStr} max="100">
+        {progressStr} %
+      </progress>
+    </div>
   );
 }
