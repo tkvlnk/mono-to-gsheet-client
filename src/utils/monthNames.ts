@@ -16,7 +16,7 @@ export const monthNames: {
   },
   {
     ua: "Квітень",
-    code: "ARP",
+    code: "APR",
   },
   {
     ua: "Травень",
